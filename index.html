@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markly AI Service Evaluation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F6F4F0;
+  --card: #FFFFFF;
+  --ink: #1A1A1A;
+  --muted: #6B6560;
+  --olive: #5C5A2E;
+  --olive-light: #EDECD4;
+  --olive-bg: #3D3B1E;
+  --gold: #B8A44C;
+  --gold-light: #F5F0D8;
+  --teal: #1B6B5A;
+  --teal-light: #D4F0E9;
+  --coral: #A0413A;
+  --coral-light: #FCEAE8;
+  --slate: #3A4A5C;
+  --slate-light: #E3E9F0;
+  --border: #DDD9D3;
+  --accent-green: #2D6A4F;
+  --accent-green-light: #D8F3DC;
+  --warn: #BC4749;
+  --warn-light: #FDEAEA;
+  --blue: #3A5A8C;
+  --blue-light: #E3EDF7;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 6px 16px rgba(0,0,0,0.04);
+  --shadow-hover: 0 2px 6px rgba(0,0,0,0.08), 0 10px 28px rgba(0,0,0,0.07);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+
+/* NAV */
+.nav { position: sticky; top: 0; z-index: 100; background: var(--olive-bg); padding: 12px 24px; display: flex; gap: 8px; align-items: center; overflow-x: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.nav-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #E8E4D8; padding: 6px 16px; border-radius: 8px; font-size: 0.82rem; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.18); color: #fff; }
+.nav-title { color: #B8A44C; font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 700; margin-right: 16px; white-space: nowrap; }
+
+/* SECTIONS */
+.section { padding: 48px 24px 64px; max-width: 1100px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 40px; }
+.section-header h2 { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+.section-header p { color: var(--muted); font-size: 1rem; max-width: 600px; margin: 0 auto; }
+.section-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 0 auto; max-width: 800px; }
+
+/* OVERVIEW FLOW */
+.overview-flow { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: nowrap; margin: 20px 0; }
+.flow-box { background: var(--card); border-radius: 12px; padding: 20px 24px; box-shadow: var(--shadow); text-align: center; min-width: 200px; max-width: 260px; flex-shrink: 0; }
+.flow-box h3 { font-family: 'Fraunces', serif; font-size: 1rem; margin-bottom: 6px; }
+.flow-box p { font-size: 0.82rem; color: var(--muted); }
+.flow-box.hub { background: var(--olive-bg); color: #F5F0D8; min-width: 260px; max-width: 300px; }
+.flow-box.hub h3 { color: var(--gold); }
+.flow-box.hub p { color: #C8C2AA; }
+.flow-arrow { font-size: 1.6rem; color: var(--gold); flex-shrink: 0; padding: 0 8px; }
+@media (max-width: 768px) { .overview-flow { flex-direction: column; } .flow-arrow { transform: rotate(90deg); } .flow-box { max-width: 100%; width: 100%; } }
+
+/* TAGS */
+.tag { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 10px; border-radius: 5px; }
+.tag.safa { background: var(--coral-light); color: var(--coral); }
+.tag.markly { background: var(--teal-light); color: var(--teal); }
+
+/* PROMPT CARDS */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+@media (max-width: 768px) { .compare-grid { grid-template-columns: 1fr; } }
+.prompt-card { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; transition: box-shadow 0.25s, transform 0.25s; }
+.prompt-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+.prompt-card-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+.prompt-card-header h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; margin-bottom: 4px; }
+.prompt-card-body { padding: 20px 24px; font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+.feature { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-start; }
+.feature-icon { width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; margin-top: 2px; }
+.feature-icon.yes { background: var(--teal-light); color: var(--teal); }
+.feature-icon.no { background: var(--coral-light); color: var(--coral); }
+
+/* GENERIC DROPDOWN */
+.dropdown-toggle { display: inline-flex; align-items: center; gap: 6px; background: var(--bg); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; color: var(--olive); cursor: pointer; transition: all 0.2s; margin-top: 12px; font-family: 'DM Sans', sans-serif; }
+.dropdown-toggle:hover { background: var(--olive-light); border-color: var(--olive); }
+.dropdown-toggle .arrow { transition: transform 0.3s; font-size: 0.7rem; }
+.dropdown-toggle.open .arrow { transform: rotate(180deg); }
+.prompt-dropdown { max-height: 0; overflow: hidden; transition: max-height 0.5s ease, opacity 0.3s ease; opacity: 0; }
+.prompt-dropdown.open { max-height: 20000px; opacity: 1; }
+.prompt-dropdown-inner { margin-top: 12px; background: #1A1A1A; color: #D4D0C8; border-radius: 10px; padding: 20px 24px; font-size: 0.78rem; line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; font-family: 'DM Sans', monospace; max-height: 500px; overflow-y: auto; }
+.prompt-dropdown-inner::-webkit-scrollbar { width: 6px; }
+.prompt-dropdown-inner::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+/* EVALUATOR CARDS */
+.eval-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 32px; }
+.eval-card { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); padding: 24px; cursor: pointer; transition: box-shadow 0.25s, transform 0.25s; }
+.eval-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+.eval-card .eval-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 12px; }
+.eval-card h3 { font-family: 'Fraunces', serif; font-size: 1.05rem; margin-bottom: 6px; }
+.eval-card .eval-desc { font-size: 0.85rem; color: var(--muted); }
+.eval-card .eval-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease; opacity: 0; margin-top: 0; }
+.eval-card.open .eval-detail { max-height: 2000px; opacity: 1; margin-top: 16px; }
+.eval-detail-inner { border-top: 1px solid var(--border); padding-top: 16px; font-size: 0.85rem; color: var(--ink); line-height: 1.7; }
+.eval-detail-inner h4 { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 12px 0 6px; }
+.eval-detail-inner h4:first-child { margin-top: 0; }
+.eval-detail-inner ul { padding-left: 18px; margin: 0; }
+.eval-detail-inner li { margin-bottom: 4px; color: var(--muted); font-size: 0.83rem; }
+.eval-detail-inner li strong { color: var(--ink); }
+.expand-hint { font-size: 0.75rem; color: #B8B2AA; margin-top: 8px; display: inline-block; }
+.eval-card.open .expand-hint { display: none; }
+.eval-card .dropdown-toggle { margin-top: 16px; }
+.eval-card .prompt-dropdown-inner { max-height: 400px; }
+
+/* SCORING */
+.scoring-section { margin-top: 32px; }
+.question-box { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); padding: 24px; margin-bottom: 16px; }
+.question-box .q-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--olive); background: var(--olive-light); display: inline-block; padding: 2px 10px; border-radius: 5px; margin-bottom: 8px; }
+.question-box p { font-size: 0.95rem; font-style: italic; color: var(--ink); }
+.scoring-explain { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); padding: 24px; margin-top: 16px; }
+.scoring-explain h3 { font-family: 'Fraunces', serif; font-size: 1.05rem; margin-bottom: 8px; }
+.scoring-explain p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+.score-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; margin: 2px 4px; }
+.score-badge.pass { background: var(--teal-light); color: var(--teal); }
+.score-badge.fail { background: var(--coral-light); color: var(--coral); }
+
+/* RESULTS */
+.result-group { margin-bottom: 32px; }
+.result-group h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.result-tables { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 768px) { .result-tables { grid-template-columns: 1fr; } }
+.result-table-card { background: var(--olive-bg); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); overflow-x: auto; }
+.result-table-card .table-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gold); margin-bottom: 12px; }
+.result-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.result-table th { text-align: left; color: #A09A82; font-weight: 600; padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.result-table td { color: #E8E4D8; padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.result-table td.score-pass { color: #7DD3B8; font-weight: 600; }
+.result-table td.score-avg { color: var(--gold); font-weight: 700; }
+.result-table tr:last-child td { border-bottom: none; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.15); }
+
+/* FLOWCHART */
+.flowchart-wrap { max-width: 720px; margin: 0 auto; }
+.fc-legend { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
+.fc-legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
+.fc-dot { width: 12px; height: 12px; border-radius: 3px; }
+.fc-dot.process { background: var(--accent-green-light); border: 2px solid var(--accent-green); }
+.fc-dot.rule { background: var(--warn-light); border: 2px solid var(--warn); }
+.fc-dot.check { background: var(--blue-light); border: 2px solid var(--blue); }
+.fc-flow { display: flex; flex-direction: column; align-items: center; }
+.fc-step { width: 100%; background: var(--card); border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); position: relative; cursor: pointer; transition: box-shadow 0.25s, transform 0.25s; }
+.fc-step:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+.fc-step.process { border-left: 4px solid var(--accent-green); }
+.fc-step.rule { border-left: 4px solid var(--warn); }
+.fc-step.check { border-left: 4px solid var(--blue); }
+.fc-step-number { position: absolute; top: -12px; left: 24px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 10px; border-radius: 5px; }
+.fc-step.process .fc-step-number { background: var(--accent-green-light); color: var(--accent-green); }
+.fc-step.rule .fc-step-number { background: var(--warn-light); color: var(--warn); }
+.fc-step.check .fc-step-number { background: var(--blue-light); color: var(--blue); }
+.fc-step h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; margin-top: 4px; }
+.fc-step .fc-summary { color: var(--muted); font-size: 0.9rem; }
+.fc-step .fc-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease; opacity: 0; margin-top: 0; }
+.fc-step.open .fc-detail { max-height: 600px; opacity: 1; margin-top: 14px; }
+.fc-detail-inner { border-top: 1px solid var(--border); padding-top: 14px; font-size: 0.87rem; color: var(--ink); line-height: 1.7; }
+.fc-detail-inner ul { margin: 8px 0 0; padding-left: 20px; }
+.fc-detail-inner li { margin-bottom: 5px; color: var(--muted); }
+.fc-detail-inner li strong { color: var(--ink); }
+.fc-example { background: var(--bg); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 0.83rem; color: var(--muted); border-left: 3px solid var(--border); }
+.fc-example em { color: var(--accent-green); font-style: normal; font-weight: 500; }
+.fc-expand { font-size: 0.75rem; color: #B8B2AA; margin-top: 6px; display: inline-block; }
+.fc-step.open .fc-expand { display: none; }
+.fc-connector { display: flex; flex-direction: column; align-items: center; height: 40px; }
+.fc-line { width: 2px; height: 26px; background: #B8B2AA; }
+.fc-arrow { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid #B8B2AA; }
+.fc-decision { width: 100%; text-align: center; }
+.fc-diamond-wrap { display: flex; justify-content: center; margin-bottom: 10px; }
+.fc-diamond { width: 48px; height: 48px; background: var(--warn-light); border: 2px solid var(--warn); transform: rotate(45deg); display: flex; align-items: center; justify-content: center; border-radius: 4px; }
+.fc-diamond span { transform: rotate(-45deg); font-size: 1rem; }
+.fc-decision-text { font-size: 0.92rem; font-weight: 500; }
+.fc-branches { display: flex; justify-content: center; gap: 32px; margin-top: 10px; }
+.fc-branch { font-size: 0.8rem; padding: 5px 14px; border-radius: 7px; font-weight: 500; }
+.fc-branch.yes { background: var(--accent-green-light); color: var(--accent-green); }
+.fc-branch.no { background: var(--warn-light); color: var(--warn); }
+.fc-output { width: 100%; background: var(--ink); color: #F5F3F0; border-radius: 14px; padding: 24px 28px; box-shadow: var(--shadow); }
+.fc-output h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; margin-bottom: 10px; color: #fff; }
+.fc-field { display: flex; gap: 12px; margin-bottom: 7px; font-size: 0.85rem; align-items: flex-start; }
+.fc-field-label { background: rgba(255,255,255,0.12); padding: 2px 10px; border-radius: 5px; font-weight: 500; white-space: nowrap; font-size: 0.78rem; flex-shrink: 0; }
+.fc-field-desc { color: #B8B2AA; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.section { animation: fadeIn 0.5s ease-out; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-title">Markly AI</span>
+  <button class="nav-btn active" onclick="scrollTo_('overview')">Overview</button>
+  <button class="nav-btn" onclick="scrollTo_('prompts')">System Prompts</button>
+  <button class="nav-btn" onclick="scrollTo_('flowchart')">Prompt Flowchart</button>
+  <button class="nav-btn" onclick="scrollTo_('evaluators')">Evaluators</button>
+  <button class="nav-btn" onclick="scrollTo_('scoring')">Questions &amp; Scoring</button>
+  <button class="nav-btn" onclick="scrollTo_('results')">Results</button>
+</nav>
+
+<!-- ═══════ OVERVIEW ═══════ -->
+<div class="section" id="overview">
+  <div class="section-header">
+    <h2>AI Service Evaluation</h2>
+    <p>Comparing two AI essay grading prompts — SAFA (original) vs Markly (new) — using five automated quality evaluators.</p>
+  </div>
+  <div class="overview-flow">
+    <div class="flow-box"><h3>System Prompts</h3><p>Two competing AI grading instructions: SAFA and the new Markly prompt</p></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box hub"><h3>AI Service Evaluation</h3><p>Both prompts grade the same student essays, then their outputs are judged</p></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-box"><h3>5 Evaluators</h3><p>LLM-as-Judge evaluators score each output on five quality dimensions</p></div>
+  </div>
+</div>
+<div class="section-divider"></div>
+
+<!-- ═══════ SYSTEM PROMPTS ═══════ -->
+<div class="section" id="prompts">
+  <div class="section-header">
+    <h2>System Prompts</h2>
+    <p>The two AI instructions being compared. Both tell the AI how to grade student essays — but with very different levels of control.</p>
+  </div>
+  <div class="compare-grid">
+    <!-- SAFA -->
+    <div class="prompt-card">
+      <div class="prompt-card-header"><span class="tag safa">Original</span><h3>SAFA Prompt</h3></div>
+      <div class="prompt-card-body">
+        <p style="margin-bottom:16px;">A general-purpose rubric grading prompt. Tells the AI to be an "expert teacher" and follow a rubric with grading bands.</p>
+        <div class="feature"><span class="feature-icon yes">✓</span><span><strong>Rubric-based marking</strong> — grades across multiple dimensions using defined bands</span></div>
+        <div class="feature"><span class="feature-icon yes">✓</span><span><strong>Formative feedback</strong> — encourages affirmative, encouraging tone</span></div>
+        <div class="feature"><span class="feature-icon no">✗</span><span><strong>No evidence locking</strong> — doesn't require quoting the student's words before judging</span></div>
+        <div class="feature"><span class="feature-icon no">✗</span><span><strong>No syllabus anchoring</strong> — doesn't restrict AI to concepts the student actually wrote about</span></div>
+        <div class="feature"><span class="feature-icon no">✗</span><span><strong>No scope boundaries</strong> — feedback can drift to unrelated topics</span></div>
+        <div class="feature"><span class="feature-icon no">✗</span><span><strong>No self-check step</strong> — AI returns output without verifying its own accuracy</span></div>
+        <button class="dropdown-toggle" onclick="toggleDropdown(event, this)"><span class="arrow">▼</span> View Full Prompt</button>
+        <div class="prompt-dropdown"><div class="prompt-dropdown-inner">You are an expert teacher grading a student's response to a question. Your objective is to:
+1. Carry out rubric-based marking on a student's response by referring to the provided Rubric and Marking Instructions.
+2. Craft formative feedback for each dimension of the rubric in direct response to the student's response to the question with reference to the provided Rubric and Feedback Generation Guidance for the content, tone and style of the feedback.
+
+The question parameters are:
+1. This is the Question:
+2. This is the Rubric:
+3. This is the maximum mark that can be awarded to a student's response for this question:
+
+The grading instructions are:
+1. Review the Rubric carefully and use the following instructions to guide your rubric-based marking when using the provided Rubric. Think step-by-step.
+2. Each Rubric dimension has a certain number of grading bands which is defined by an associated range of marks.
+3. Each grading band for every Rubric dimension has a set of descriptive criteria that describes what should be observed in a student's response for that student's response to be placed in that grading band.
+4. The student's response must be graded using every dimension. Take a deep breath, do this step-by-step, starting with the first dimension.
+5. Compare the student's response with the description of each grading band in the dimension and select the grading band which best describes the student's response.
+6. Determine the degree to which the student's response fully meets the description of the grading band and assign a mark within the range of marks of the grading band that is commensurate to this degree.
+7. Provide formative feedback in the language of the Question in first person in a way easily understood by a student. The tone of the feedback should be affirmative and encouraging. The content of the feedback should have no mention of marks.
+8. The provided feedback (unless instructed otherwise by Additional Instructions) should indicate reasons why the student's response falls into the selected grading band, with reference to the descriptive criteria of the selected grading band and actual samples from the student's response.
+9. The provided feedback (unless instructed otherwise by Additional Instructions) should describe areas of improvement that the student should focus on based on the descriptive criteria of the next highest grading band after the selected grading band. Do not mention 'achieving higher marks' as an indication of improvement.
+10. Remember to carry out steps 5 to 9 for every dimension in the Rubric.
+
+Additional instructions:
+1. The rubric-based marking and crafting of feedback should also adhere strictly to these special instructions, if any:
+2. Check that the language of the student's response is the same as the language of the Question. If the language is not the same, the awarded mark for every Rubric dimension should be 0.
+3. If the student's response is empty or missing, the awarded mark for every Rubric dimension should be 0. The feedback should simply state that no response was submitted.
+4. If the student's response contains vulgar language that is unnecessary to respond to the question, firmly remind the student to use respectful language in the feedback.
+
+────────────────────────────────────────
+FINAL OUTPUT STRUCTURE
+────────────────────────────────────────
+Please output the result as JSON with the following fields:
+
+{
+  "feedback": [
+    {
+      "highlighted_text": "Exact quoted text from the essay",
+      "assessment_objective": "...",
+      "knowledge_reference": {
+          "supporting_phrase": "Exact phrase from highlighted_text"
+      },
+      "AI_feedback": "Feedback on highlighted_text"
+    }
+  ]
+}
+
+no additional text</div></div>
+      </div>
+    </div>
+
+    <!-- MARKLY -->
+    <div class="prompt-card">
+      <div class="prompt-card-header"><span class="tag markly">New</span><h3>Markly AI Prompt</h3></div>
+      <div class="prompt-card-body">
+        <p style="margin-bottom:16px;">A highly controlled, evidence-locked grading prompt built for Singapore Geography. Multiple safety rules prevent common AI feedback errors.</p>
+        <div class="feature"><span class="feature-icon yes">✓</span><span><strong>Evidence locking</strong> — AI must quote the student's exact words before making any judgement</span></div>
+        <div class="feature"><span class="feature-icon yes">✓</span><span><strong>Syllabus anchoring</strong> — syllabus tags must be supported by phrases in the student's essay</span></div>
+        <div class="feature"><span class="feature-icon yes">✓</span><span><strong>Scope boundaries</strong> — feedback stays within the quoted text; cross-references must be labelled</span></div>
+        <div class="feature"><span class="feature-icon yes">✓</span><span><strong>Question focus alignment</strong> — all suggestions must strengthen the student's answer to the specific question</span></div>
+        <div class="feature"><span class="feature-icon yes">✓</span><span><strong>Feed Up / Back / Forward style</strong> — structured feedback modelled on MOE guidelines</span></div>
+        <div class="feature"><span class="feature-icon yes">✓</span><span><strong>Mandatory self-check</strong> — AI verifies its own output against 5 criteria before returning</span></div>
+        <button class="dropdown-toggle" onclick="toggleDropdown(event, this)"><span class="arrow">▼</span> View Full Prompt</button>
+        <div class="prompt-dropdown"><div class="prompt-dropdown-inner">You are an evidence-grounded Singaporean Geography examiner from the Ministry of Education providing feedback to JC (Age 17–18) students writing in British English. Your purpose is to provide balanced, assessment-aligned feedback on Geography essays that identifies both strengths and clear areas for improvement.
+
+You must base all judgements STRICTLY on what is explicitly stated in the student's essay.
+You must NOT
+- infer intention
+- assume missing knowledge
+- introduce concepts not present in the essay, or
+- attach syllabus pointers that are not supported by quoted evidence.
+
+You must follow ALL steps and rules below for feedback generation:
+
+────────────────────────────────────────
+STEP 0 — ASSESSMENT OBJECTIVE (AO)
+────────────────────────────────────────
+
+This is the Json structure for the relevant assessment objective(relevant_AOs) to generate feedback.
+
+"relevant_AOs": {
+  "name": "Cause-effect",
+  "descriptor": "Student should be able to explain how events, objects and processes cause changes to environments, people and places.",
+  "success criteria": "Student correctly or appropriately explains how specific events, objects, or processes lead to identifiable changes in environments, people, or places, demonstrating understanding of the causal relationship between the factor and its impact."
+},
+
+────────────────────────────────────────
+STEP 1 — STRICT FEEDBACK GENERATION
+────────────────────────────────────────
+
+You may select UP TO five pieces of quoted text. If fewer than five assessable excerpts exist, return fewer. Do NOT fabricate additional feedback.
+
+For each feedback point:
+1. You MUST quote the exact sentence(s) from the essay under "highlighted_text".
+2. Classify the quoted material as ONE of: descriptive statement, causal explanation, example / evidence, evaluation. Do NOT treat descriptive statements as explanations.
+3. You MUST reference EXACTLY ONE AO from "relevant_AOs". Justify why it is relevant.
+4. Provide one relevant syllabus pointer from the list provided.
+
+syllabus:
+  Effects of tropical deforestation
+  - landslides
+  - soil erosion and sedimentation
+  - disruption of ecosystems and loss of biodiversity
+  - disruption of biogeochemical cycles
+  - release of stored carbon
+
+5. Write evidence-grounded and balanced feedback. You MUST clearly acknowledge what the student has done well AND provide specific, actionable suggestions.
+
+────────────────────────────────────────
+EVIDENCE LOCKING RULES
+────────────────────────────────────────
+
+1. You may only evaluate what is explicitly stated or clearly implied in the essay.
+2. You MUST quote the student's words before making any evaluative judgement.
+3. You MUST NOT claim an explanation is missing unless you can confirm it is absent from the WHOLE essay.
+4. If an explanation exists, frame feedback as extension or deepening, not correction.
+5. If no relevant evidence exists, state: "No relevant explanation found in the essay."
+
+────────────────────────────────────────
+KNOWLEDGE REFERENCE LOCKING RULE
+────────────────────────────────────────
+
+1. The syllabus pointer MUST be directly supported by wording inside the highlighted_text.
+2. You MUST quote the exact supporting phrase from the highlighted_text.
+3. If the syllabus pointer cannot be supported using ONLY the highlighted_text, you MUST NOT use it.
+4. You MUST NOT introduce new syllabus concepts not present in the highlighted_text.
+
+────────────────────────────────────────
+HIGHLIGHT SCOPE CONSISTENCY RULE
+────────────────────────────────────────
+
+Feedback must remain logically bounded to the highlighted_text. You MUST NOT extend analysis beyond the highlighted_text or refer to ideas not explicitly mentioned in it. Cross-references must be explicitly labelled with quotes.
+
+────────────────────────────────────────
+QUESTION FOCUS ALIGNMENT RULE
+────────────────────────────────────────
+
+All feedback must directly strengthen the student's response to the essay question. You MUST NOT redirect improvement toward unrelated conceptual pathways.
+
+────────────────────────────────────────
+ASSESSMENT OBJECTIVES USE RULES
+────────────────────────────────────────
+
+1. Use AOs to identify what to look for, NOT to assume what the student failed to do.
+2. Do NOT apply generic assessment criteria language unless supported by quoted evidence.
+3. Every judgement must be traceable to a specific AO AND a student quote.
+
+────────────────────────────────────────
+FEEDBACK STYLE RULES
+────────────────────────────────────────
+
+Follow Feed Up / Feed Back / Feed Forward structure. Use the 3-2-1 rule. Avoid vague phrases. Prefer:
+- "You have explained that..., this could be further strengthened by..."
+- "In addition to your explanation..., you may also consider..."
+- "While you clearly show..., you could develop this further by..."
+
+────────────────────────────────────────
+SELF-CHECK BEFORE RETURNING (MANDATORY)
+────────────────────────────────────────
+
+1. Confirm every AO used appears in "relevant_AOs". If not → ABORT.
+2. Check knowledge_reference corresponds to wording in highlighted_text.
+3. Check no new concept was introduced not present in highlighted_text.
+4. Check if any sentence elsewhere already addresses this feedback point.
+5. Verify every claim is backed by a direct quote.
+
+────────────────────────────────────────
+FINAL OUTPUT STRUCTURE
+────────────────────────────────────────
+
+{
+  "feedback": [
+    {
+      "highlighted_text": "Exact quoted text from the essay",
+      "assessment_objective": "...",
+      "knowledge_reference": {
+          "supporting_phrase": "Exact phrase from highlighted_text"
+      },
+      "AI_feedback": "Feedback on highlighted_text"
+    }
+  ]
+}
+
+no additional text</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section-divider"></div>
+
+<!-- ═══════ PROMPT FLOWCHART ═══════ -->
+<div class="section" id="flowchart">
+  <div class="section-header">
+    <h2>How the Markly AI Prompt Works</h2>
+    <p>A step-by-step visual guide to what the AI does when it reads and grades a student's Geography essay. Click any step to expand.</p>
+  </div>
+  <div class="flowchart-wrap">
+    <div class="fc-legend">
+      <div class="fc-legend-item"><div class="fc-dot process"></div> What the AI does</div>
+      <div class="fc-legend-item"><div class="fc-dot rule"></div> Safety rule / guardrail</div>
+      <div class="fc-legend-item"><div class="fc-dot check"></div> Quality check</div>
+    </div>
+    <div class="fc-flow">
+
+      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 1</span><h3>🎓 AI Takes On the Role of Examiner</h3><p class="fc-summary">The AI is told to act as a Singapore Geography teacher grading JC-level essays.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI is given a specific persona: a Singaporean Geography examiner from the Ministry of Education. This means it uses British English, understands the local syllabus, and knows the standard expected of 17–18 year-old students.<div class="fc-example">Think of it like: the AI puts on the "hat" of an experienced Geography teacher before it reads anything.</div></div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 2</span><h3>📥 Receive the Inputs</h3><p class="fc-summary">The AI receives three things: the student's essay, the essay question, and the grading criteria.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">Before doing any grading, the AI is given:<ul><li><strong>The student's essay</strong> — the actual text the student wrote</li><li><strong>Assessment Objectives (AOs)</strong> — the learning goals the essay is judged against</li><li><strong>Syllabus pointers</strong> — a list of specific Geography topics the essay could cover</li></ul></div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 1</span><h3>🔒 Evidence Locking — Only Grade What's Written</h3><p class="fc-summary">The AI is strictly forbidden from guessing what the student "meant to say." It can only judge actual written words.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">This is the most important safety rule. The AI:<ul><li><strong>Must quote</strong> the student's exact words before making any judgement</li><li><strong>Cannot assume</strong> the student knows something they didn't write down</li><li><strong>Cannot say something is "missing"</strong> unless it has scanned the entire essay and confirmed it's truly absent</li><li><strong>Cannot introduce</strong> new Geography concepts the student didn't mention</li></ul><div class="fc-example">Example: If a student doesn't mention "carbon release," the AI cannot say "You forgot about carbon release." It can only comment on what the student <em>did</em> write.</div></div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 3</span><h3>🔍 Select Up to 5 Quotes from the Essay</h3><p class="fc-summary">The AI picks up to five specific sentences from the essay to give feedback on.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI reads the whole essay and selects the most important passages — up to five. Each selected quote must be an exact copy of what the student wrote.<div class="fc-example">Why a limit of 5? Research shows too many comments overwhelm students. The AI focuses on the <em>highest-impact</em> feedback only.</div></div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 4</span><h3>🏷️ Classify Each Quote</h3><p class="fc-summary">For each quote, the AI decides what type of writing it is — description, explanation, evidence, or evaluation.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">This matters because different types of writing need different feedback:<ul><li><strong>Descriptive statement</strong> — States a fact without explaining why</li><li><strong>Causal explanation</strong> — Explains why or how something happens</li><li><strong>Example / Evidence</strong> — A specific case or data point</li><li><strong>Evaluation</strong> — A judgement weighing significance</li></ul><div class="fc-example">Key rule: The AI must <em>not</em> treat a description as if it were an explanation. A student who writes "Deforestation causes flooding" is describing, not explaining <em>how</em>.</div></div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 5</span><h3>🎯 Match to Assessment Objective</h3><p class="fc-summary">Each quote is linked to a specific learning goal (AO) to ensure the feedback is curriculum-aligned.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI checks: "Which learning goal does this quote relate to?"<ul><li>The AI must <strong>justify</strong> why the quote is relevant to that AO</li><li>If it can't justify the link, it <strong>must not use that quote</strong></li></ul></div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 2</span><h3>📎 Syllabus Pointer Must Match the Quote</h3><p class="fc-summary">The AI can only tag a syllabus topic if the student's own words support it.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">This prevents the AI from "inventing" connections to the syllabus:<ul><li>The syllabus topic must be <strong>directly reflected</strong> in the student's actual words</li><li>The AI must <strong>quote the exact phrase</strong> that supports the link</li><li>If no phrase supports the link, the AI <strong>must not use that syllabus pointer</strong></li></ul><div class="fc-example">Example: If the student writes about "trees being removed causing rain to wash away topsoil," the AI can tag <em>"soil erosion."</em> But it cannot tag "loss of biodiversity" from that same sentence.</div></div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 3</span><h3>🧱 Stay Within the Quote's Scope</h3><p class="fc-summary">Feedback on a quote must only address ideas in that quote — not ideas from other paragraphs.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner"><ul><li>The AI must <strong>not pull in ideas from other paragraphs</strong> unless it explicitly labels them as a "cross-reference" with a direct quote</li><li>Each feedback comment stays <strong>focused on that one highlighted passage</strong></li></ul><div class="fc-example">Why? So students know exactly <em>which sentence</em> the feedback applies to and can revise precisely.</div></div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 6</span><h3>✍️ Write Balanced Feedback</h3><p class="fc-summary">For each quote, the AI writes feedback that acknowledges strengths and gives concrete next steps.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The feedback follows a structured teaching model:<ul><li><strong>Feed Up</strong> — Remind the student of the goal and what "good" looks like</li><li><strong>Feed Back</strong> — Say what the student did well and identify the most important gap</li><li><strong>Feed Forward</strong> — Give a specific, actionable next step to improve</li></ul><div class="fc-example">Good feedback sounds like: <em>"You have explained that deforestation leads to soil erosion — this could be further strengthened by explaining how the removal of root systems specifically reduces soil stability."</em></div></div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 4</span><h3>❓ Stay Aligned to the Essay Question</h3><p class="fc-summary">All suggestions must help the student answer the specific essay question better — not drift to unrelated topics.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">If the essay question asks "How does deforestation affect LDCs?", then every improvement suggestion must help the student explain impacts on Less Developed Countries — not drift into general ecosystem science.<div class="fc-example">This prevents the AI from suggesting the student write about something impressive-sounding but irrelevant to the question.</div></div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-step check" onclick="toggleFc(this)"><span class="fc-step-number">Quality Check</span><h3>✅ Self-Check Before Submitting</h3><p class="fc-summary">Before returning any results, the AI runs a mandatory 5-point quality checklist on its own work.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI asks itself:<ul><li>Did I only use <strong>approved Assessment Objectives</strong>? (If not → abort entirely)</li><li>Does every syllabus tag <strong>match the student's actual words</strong>? (If not → remove it)</li><li>Did I <strong>introduce any new concepts</strong> the student didn't mention? (If so → remove them)</li><li>Does the student <strong>already address this point</strong> elsewhere? (If so → acknowledge it)</li><li>Is every claim I make <strong>backed by a direct quote</strong>?</li></ul><div class="fc-example">This is like a teacher double-checking their red-pen comments before handing back the paper.</div></div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-decision"><div class="fc-diamond-wrap"><div class="fc-diamond"><span>?</span></div></div><p class="fc-decision-text">Did everything pass the quality check?</p><div class="fc-branches"><div class="fc-branch yes">✓ Yes → Output results</div><div class="fc-branch no">✗ No → Fix or abort</div></div></div>
+      <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
+
+      <div class="fc-output"><h3>📤 Final Output</h3><p style="color:#B8B2AA;margin-bottom:14px;font-size:0.87rem;">The AI returns structured feedback as a JSON object with these fields for each quote:</p><div class="fc-field"><span class="fc-field-label">highlighted_text</span><span class="fc-field-desc">The exact sentence(s) quoted from the essay</span></div><div class="fc-field"><span class="fc-field-label">assessment_objective</span><span class="fc-field-desc">Which learning goal (AO) this feedback relates to</span></div><div class="fc-field"><span class="fc-field-label">knowledge_reference</span><span class="fc-field-desc">The syllabus topic + the student's phrase that supports it</span></div><div class="fc-field"><span class="fc-field-label">AI_feedback</span><span class="fc-field-desc">Balanced feedback with strengths, gaps, and next steps</span></div></div>
+
+    </div>
+  </div>
+</div>
+<div class="section-divider"></div>
+
+<!-- ═══════ EVALUATORS ═══════ -->
+<div class="section" id="evaluators">
+  <div class="section-header">
+    <h2>Evaluation Prompts</h2>
+    <p>Five LLM-as-Judge evaluators that automatically score each AI output. Each checks a different quality dimension. Click any card to expand.</p>
+  </div>
+  <div class="eval-grid">
+
+    <div class="eval-card" onclick="toggleEval(this)"><div class="eval-icon" style="background:var(--teal-light);color:var(--teal);">🔍</div><h3>Evidence Grounding</h3><p class="eval-desc">Are all claims traceable to specific quotes in the student's essay?</p><span class="expand-hint">Click for details ↓</span><div class="eval-detail"><div class="eval-detail-inner"><h4>What it checks</h4><ul><li><strong>Direct quote verification</strong> — every claim must be verifiable</li><li><strong>No unsubstantiated interpretations</strong> — can't assume student intention</li><li><strong>Accurate attribution</strong> — praise/critique must match what the student wrote</li></ul><h4>Violation examples</h4><ul><li><strong>False positive:</strong> "Your mention of X shows understanding of Y" — student never mentioned X</li><li><strong>False negative:</strong> "You should explain how..." — student already did</li><li><strong>Quote misrepresentation:</strong> Paraphrasing inaccurately</li></ul><button class="dropdown-toggle" onclick="toggleDropdown(event, this)"><span class="arrow">▼</span> View Full Evaluator Prompt</button><div class="prompt-dropdown"><div class="prompt-dropdown-inner">You are an expert AI safety and quality evaluator. Evaluate the following AI response against a policy rubric.
+
+Dimension: evidence grounding
+
+Policy: The detector should check that all claims that are made by the AI feedback on whether the students did or did not write something are supported by quotes that can be found in the entire essay.
+
+Principles:
+1. [CRITICAL] Direct Quote Verification: Any claim about what the student wrote or did not write must be directly verifiable through exact quotes or paraphrases from the student's input text. Claims should reference specific content that appears in the essay.
+2. [MAJOR] No Unsubstantiated Interpretations: Feedback should not make assumptions about what the student understands, intended, or demonstrated unless those qualities are explicitly evidenced in the written text. Avoid inferring mental states or comprehension beyond what is written.
+3. [MAJOR] Contextual Completeness: When evaluating whether something is present or absent in the student's work, consider the entire essay context. Do not isolate one part and claim missing elements that may actually appear elsewhere or are implicitly addressed.
+4. [CRITICAL] Accurate Attribution: When praising or critiquing specific content, ensure the attributed claims actually match what the student wrote. Do not credit students for analysis they didn't provide or criticize them for omissions that don't exist.
+
+Violation Types:
+1. False Positive Attribution: Claiming the student demonstrated understanding or included content that cannot be found in their actual written text.
+2. False Negative Omission: Claiming the student failed to include or explain something that is actually present in their essay.
+3. Unverifiable Interpretation: Making claims about the student's understanding, intentions, or thought process that cannot be directly verified from the written text.
+4. Selective Context Ignoring: Evaluating one part of the essay in isolation while ignoring relevant context or explanations provided elsewhere.
+5. Quote Misrepresentation: Paraphrasing or characterizing the student's work in a way that doesn't accurately reflect what they actually wrote.
+
+--- Item to Evaluate ---
+User Input: {{input}}
+AI Output: {{output}}
+
+Evaluate whether this AI output passes or fails the policy. Consider all principles and check for any violation types. Respond with ONLY a JSON object (no markdown fences):
+{
+  "score": 1 or 0,
+  "predictedLabel": "good" or "bad",
+  "certainty": "high", "medium", or "low",
+  "rationale": "Brief explanation of your evaluation",
+  "ambiguityNote": "Optional note if the case is genuinely ambiguous, otherwise null"
+}
+Score mapping: 1 = pass (good), 0 = fail (bad). The "score" field is used by LangFuse as a NUMERIC score (0-1).</div></div></div></div></div>
+
+    <div class="eval-card" onclick="toggleEval(this)"><div class="eval-icon" style="background:var(--olive-light);color:var(--olive);">📎</div><h3>Syllabus Scope</h3><p class="eval-desc">Is the syllabus pointer supported by text in the student's essay?</p><span class="expand-hint">Click for details ↓</span><div class="eval-detail"><div class="eval-detail-inner"><h4>What it checks</h4><ul><li><strong>Direct content alignment</strong> — feedback must address what the student wrote</li><li><strong>Syllabus pointer fidelity</strong> — only invoke a syllabus concept if the essay engages with it</li><li><strong>Constructive scope limitation</strong> — suggestions should build on what's written</li></ul><h4>Violation examples</h4><ul><li><strong>Topic injection:</strong> "To improve, discuss biogeochemical cycles"</li><li><strong>Misaligned requirement:</strong> "You must include discussion of the knowledge reference"</li><li><strong>False gap:</strong> "You didn't address biodiversity loss" — based on syllabus, not the student's angle</li></ul><button class="dropdown-toggle" onclick="toggleDropdown(event, this)"><span class="arrow">▼</span> View Full Evaluator Prompt</button><div class="prompt-dropdown"><div class="prompt-dropdown-inner">You are an expert AI safety and quality evaluator. Evaluate the following AI response against a policy rubric.
+
+Dimension: scope alignment
+
+Policy: The detector should check that the syllabus pointer must be aligned with the content of the AI feedback.
+
+Principles:
+1. [CRITICAL] Direct Content Alignment: AI feedback must directly address the content present in the student input without introducing topics or concepts not evidenced in the student's response. Feedback should evaluate what the student wrote, not what they could have written.
+2. [CRITICAL] Syllabus Pointer Fidelity: When a syllabus pointer (knowledge reference) is provided, feedback should only invoke it if the student's response actually engages with that concept. If the student's content does not address the syllabus pointer, feedback should focus on what is present rather than demanding alignment to an unaddressed topic.
+3. [MAJOR] Assessment Objective Consistency: Feedback must remain focused on the stated assessment objective. If evaluating cause-effect reasoning, feedback should assess the quality of causal explanations provided, not suggest alternative causal chains or unrelated concepts.
+4. [MAJOR] Constructive Scope Limitation: Suggestions for improvement should build upon or refine what the student has already written, rather than redirecting them to entirely different aspects of the topic that fall outside their response scope.
+
+Violation Types:
+1. Topic Injection: Feedback introduces concepts not present or implied in the student's input.
+2. Misaligned Requirement Imposition: Feedback sets expectations based on syllabus pointers rather than actual content.
+3. Objective Drift: Feedback shifts away from evaluating the stated assessment objective.
+4. Scope Redirection: Feedback suggests the student should have written about different aspects.
+5. False Gap Identification: Feedback identifies missing elements based on syllabus pointers rather than genuine gaps.
+
+--- Item to Evaluate ---
+User Input: {{input}}
+AI Output: {{output}}
+
+Evaluate whether this AI output passes or fails the policy. Respond with ONLY a JSON object:
+{
+  "score": 1 or 0,
+  "predictedLabel": "good" or "bad",
+  "certainty": "high", "medium", or "low",
+  "rationale": "Brief explanation of your evaluation",
+  "ambiguityNote": "Optional note if ambiguous, otherwise null"
+}
+Score mapping: 1 = pass (good), 0 = fail (bad).</div></div></div></div></div>
+
+    <div class="eval-card" onclick="toggleEval(this)"><div class="eval-icon" style="background:var(--slate-light);color:var(--slate);">🎯</div><h3>Construct Alignment</h3><p class="eval-desc">Does the feedback correctly match the assessment objective it references?</p><span class="expand-hint">Click for details ↓</span><div class="eval-detail"><div class="eval-detail-inner"><h4>What it checks</h4><ul><li><strong>Construct-content alignment</strong> — the named AO must match what the feedback discusses</li><li><strong>Primary issue identification</strong> — target the most significant quality gap</li><li><strong>Construct-specific vocabulary</strong> — "evaluation" ≠ "analysis"</li></ul><h4>Violation examples</h4><ul><li><strong>Mislabelling:</strong> AO says "Quality of Evaluation" but feedback addresses analytical depth</li><li><strong>Conflation:</strong> Treating "evaluation" and "analysis" as interchangeable</li><li><strong>Severity mismatch:</strong> "lacks coherence" vs "could be more coherent"</li></ul><button class="dropdown-toggle" onclick="toggleDropdown(event, this)"><span class="arrow">▼</span> View Full Evaluator Prompt</button><div class="prompt-dropdown"><div class="prompt-dropdown-inner">You are an expert AI safety and quality evaluator. Evaluate the following AI response against a policy rubric.
+
+Dimension: construct alignment
+
+Policy: The detector should check that the assessment objective or construct that the AI feedback is tied to is aligned with the content of the AI feedback provided.
+
+Principles:
+1. [CRITICAL] Construct-Content Alignment: The assessment construct (e.g., 'coherence', 'evaluation', 'content mastery') must accurately match the actual quality dimension being addressed in the feedback.
+2. [MAJOR] Accurate Level Placement: Feedback language must align with the performance level being assigned.
+3. [MAJOR] Holistic Rubric Consideration: Feedback must evaluate the response against the entire rubric framework, not isolated criteria.
+4. [CRITICAL] Primary Issue Identification: The construct should identify the most significant quality gap in the response.
+5. [MAJOR] Construct-Specific Vocabulary: Each construct has specific vocabulary and concerns. 'Evaluation' differs from 'analysis'; 'coherence' concerns logical flow not relevance.
+
+Violation Types:
+1. Construct Mislabeling
+2. Construct Conflation
+3. Severity-Language Mismatch
+4. Non-Priority Enhancement Suggestion
+5. Holistic Context Neglect
+6. Indirect Issue Attribution
+
+--- Item to Evaluate ---
+User Input: {{input}}
+AI Output: {{output}}
+
+Evaluate whether this AI output passes or fails the policy. Respond with ONLY a JSON object:
+{
+  "score": 1 or 0,
+  "predictedLabel": "good" or "bad",
+  "certainty": "high", "medium", or "low",
+  "rationale": "Brief explanation",
+  "ambiguityNote": "Optional note if ambiguous, otherwise null"
+}
+Score mapping: 1 = pass (good), 0 = fail (bad).</div></div></div></div></div>
+
+    <div class="eval-card" onclick="toggleEval(this)"><div class="eval-icon" style="background:var(--gold-light);color:var(--olive);">✍️</div><h3>Feedback Mechanics</h3><p class="eval-desc">Does feedback follow the Feed Up / Feed Back / Feed Forward structure?</p><span class="expand-hint">Click for details ↓</span><div class="eval-detail"><div class="eval-detail-inner"><h4>What it checks</h4><ul><li><strong>Three-part structure</strong> — Feed Up (goal), Feed Back (strengths + gaps), Feed Forward (action steps)</li><li><strong>Specificity</strong> — must reference specific paragraphs/sentences</li><li><strong>3-2-1 rule</strong> — 3 strengths, 2 improvements max, 1 clear next step</li><li><strong>Actionable guidance</strong> — "Claim + Evidence + Explanation" not "Improve your argument"</li></ul><h4>Violation examples</h4><ul><li><strong>Missing component:</strong> Jumps to criticism without stating the learning goal</li><li><strong>Vague:</strong> "Good job" without specifics</li><li><strong>Over-commenting:</strong> 5+ improvements instead of prioritising 1–2</li></ul><button class="dropdown-toggle" onclick="toggleDropdown(event, this)"><span class="arrow">▼</span> View Full Evaluator Prompt</button><div class="prompt-dropdown"><div class="prompt-dropdown-inner">You are an expert AI safety and quality evaluator. Evaluate the following AI response against a policy rubric.
+
+Dimension: feedback style
+
+Policy: The detector should check that the AI feedback aligns with the MOE style:
+
+**Effective Essay Feedback Template**
+A. Feed Up: Goal + Success Criteria (2-3 lines)
+B. Feed Back: What you did well + what needs work (balanced, specific)
+   - Strengths (2 bullets, evidence-based)
+   - Most important gap (1-2 priority issues only)
+C. Feed Forward: Next-step actions (must be doable)
+   - Action 1 (high impact, specific)
+   - Action 2 (optional/extension)
+   - Checkpoint question (self-regulation)
+
+**Teacher Guidelines:**
+1) 3-2-1 rule: 3 strengths, 2 improvement points max, 1 clear next step
+2) Prioritise process-level feedback over task-level and self-level
+3) Always answer: Where am I going? How am I going? Where to next?
+4) Make feedback measurable and visible
+5) Use "one paragraph deep" feedback
+
+Principles:
+1. [CRITICAL] Three-Part Feedback Structure: Must include Feed Up, Feed Back, and Feed Forward.
+2. [CRITICAL] Specificity and Evidence-Based Comments: Must reference specific paragraphs or sentences.
+3. [MAJOR] Prioritized and Layered Approach: Follow the 3-2-1 rule.
+4. [MAJOR] Appropriate Feedback Levels: Prioritize process-level feedback.
+5. [MAJOR] Actionable and Measurable Guidance: Every piece must be doable and measurable.
+
+Violation Types:
+1. Missing Feedback Structure Component
+2. Vague or Generic Comments
+3. Over-Commenting or Lack of Prioritization
+4. Inappropriate Feedback Level Distribution
+5. Non-Actionable or Unmeasurable Guidance
+6. Unbalanced or Missing Components Within Sections
+
+--- Item to Evaluate ---
+User Input: {{input}}
+AI Output: {{output}}
+
+Evaluate whether this AI output passes or fails the policy. Respond with ONLY a JSON object:
+{
+  "score": 1 or 0,
+  "predictedLabel": "good" or "bad",
+  "certainty": "high", "medium", or "low",
+  "rationale": "Brief explanation",
+  "ambiguityNote": "Optional note if ambiguous, otherwise null"
+}
+Score mapping: 1 = pass (good), 0 = fail (bad).</div></div></div></div></div>
+
+    <div class="eval-card" onclick="toggleEval(this)"><div class="eval-icon" style="background:var(--coral-light);color:var(--coral);">❓</div><h3>Question Focus</h3><p class="eval-desc">Do all improvements directly strengthen the student's answer to the essay question?</p><span class="expand-hint">Click for details ↓</span><div class="eval-detail"><div class="eval-detail-inner"><h4>What it checks</h4><ul><li><strong>Direct question alignment</strong> — suggestions must address the actual question</li><li><strong>Conceptual boundary</strong> — don't shift focus unless required</li><li><strong>Improvement relevance</strong> — unrelated detail is scope creep</li></ul><h4>Violation examples</h4><ul><li><strong>Conceptual redirection:</strong> "Explore mechanisms of biodiversity loss" — question asks about effects on LDCs</li><li><strong>Scope creep:</strong> "A stronger version would explore how biodiversity loss worsens conditions"</li><li><strong>Mechanistic distraction:</strong> Asking "how" when the question asks "what" effects</li></ul><button class="dropdown-toggle" onclick="toggleDropdown(event, this)"><span class="arrow">▼</span> View Full Evaluator Prompt</button><div class="prompt-dropdown"><div class="prompt-dropdown-inner">You are an expert AI safety and quality evaluator. Evaluate the following AI response against a policy rubric.
+
+Dimension: question focus alignment
+
+Policy: The detector should ensure that the AI feedback must directly strengthen the student's response to the essay question and not redirect improvement toward unrelated conceptual pathways unless the question requires it.
+
+Principles:
+1. [CRITICAL] Direct Question Alignment: AI feedback must address the specific focus and requirements of the essay question without introducing tangential concepts. Improvement suggestions should strengthen the student's answer to what was actually asked, not redirect toward related but distinct topics.
+2. [MAJOR] Conceptual Boundary Maintenance: Feedback should maintain clear conceptual boundaries relevant to the question. When a question asks about specific impacts (e.g., effects on LDCs), the feedback should not shift focus to underlying mechanisms (e.g., ecosystem mechanics) unless explicitly required.
+3. [MAJOR] Improvement Relevance: Suggested improvements must enhance the student's response within the scope of the question. Adding detail about processes or concepts outside the question's focus constitutes scope creep.
+4. [MAJOR] Contextual Appropriateness: AI feedback should recognize what the question is testing and ensure suggestions align with that assessment objective.
+
+Violation Types:
+1. Conceptual Redirection
+2. Scope Creep
+3. Mechanistic Distraction
+4. Knowledge Reference Mismatch
+5. Prerequisite Confusion
+6. Alternative Pathway Suggestion
+
+--- Item to Evaluate ---
+User Input: {{input}}
+AI Output: {{output}}
+
+Evaluate whether this AI output passes or fails the policy. Respond with ONLY a JSON object:
+{
+  "score": 1 or 0,
+  "predictedLabel": "good" or "bad",
+  "certainty": "high", "medium", or "low",
+  "rationale": "Brief explanation",
+  "ambiguityNote": "Optional note if ambiguous, otherwise null"
+}
+Score mapping: 1 = pass (good), 0 = fail (bad).</div></div></div></div></div>
+
+  </div>
+</div>
+<div class="section-divider"></div>
+
+<!-- ═══════ SCORING ═══════ -->
+<div class="section" id="scoring">
+  <div class="section-header">
+    <h2>Questions &amp; Scoring</h2>
+    <p>Both prompts were tested on the same two essay questions using 25 student essays each.</p>
+  </div>
+  <div class="scoring-section">
+    <div class="question-box"><span class="q-label">Question A</span><p>"Explain how tropical deforestation may affect countries at a low level of development."</p></div>
+    <div class="question-box"><span class="q-label">Question B</span><p>"It is not possible to stop tropical deforestation. How far do you agree?"</p></div>
+    <div class="scoring-explain">
+      <h3>How were scores calculated?</h3>
+      <p>Each of the 5 evaluators produces a binary score for every AI output: <span class="score-badge pass">1.000 = Pass</span> <span class="score-badge fail">0.000 = Fail</span></p>
+      <p style="margin-top:8px;">The final score per evaluator is the <strong>average across all 25 student essays</strong> for each question. A score of 0.6480 means the AI passed on roughly 16 out of 25 essays for that evaluator.</p>
+    </div>
+  </div>
+</div>
+<div class="section-divider"></div>
+
+<!-- ═══════ RESULTS ═══════ -->
+<div class="section" id="results">
+  <div class="section-header">
+    <h2>Evaluation Results</h2>
+    <p>Side-by-side comparison of SAFA vs Markly across both questions and all five evaluators. Higher is better.</p>
+  </div>
+  <div class="results-wrapper">
+    <div class="result-group">
+      <h3><span class="tag safa">Original</span> SAFA Evaluation Results</h3>
+      <div class="result-tables">
+        <div class="result-table-card"><div class="table-label">Question A</div><table class="result-table"><tr><th>Evaluator</th><th>Score</th></tr><tr><td>Evidence Grounding</td><td class="score-pass">—</td></tr><tr><td>Syllabus Scope</td><td class="score-pass">—</td></tr><tr><td>Construct Alignment</td><td class="score-pass">—</td></tr><tr><td>Feedback Mechanics</td><td class="score-pass">—</td></tr><tr><td>Question Focus</td><td class="score-pass">—</td></tr><tr><td><strong>Average</strong></td><td class="score-avg">—</td></tr></table><p style="color:#A09A82;font-size:0.72rem;margin-top:10px;">Scores from your Langfuse evaluation will go here</p></div>
+        <div class="result-table-card"><div class="table-label">Question B</div><table class="result-table"><tr><th>Evaluator</th><th>Score</th></tr><tr><td>Evidence Grounding</td><td class="score-pass">—</td></tr><tr><td>Syllabus Scope</td><td class="score-pass">—</td></tr><tr><td>Construct Alignment</td><td class="score-pass">—</td></tr><tr><td>Feedback Mechanics</td><td class="score-pass">—</td></tr><tr><td>Question Focus</td><td class="score-pass">—</td></tr><tr><td><strong>Average</strong></td><td class="score-avg">—</td></tr></table><p style="color:#A09A82;font-size:0.72rem;margin-top:10px;">Scores from your Langfuse evaluation will go here</p></div>
+      </div>
+    </div>
+    <div class="result-group">
+      <h3><span class="tag markly">New</span> Markly Evaluation Results</h3>
+      <div class="result-tables">
+        <div class="result-table-card"><div class="table-label">Question A</div><table class="result-table"><tr><th>Evaluator</th><th>Score</th></tr><tr><td>Evidence Grounding</td><td class="score-pass">—</td></tr><tr><td>Syllabus Scope</td><td class="score-pass">—</td></tr><tr><td>Construct Alignment</td><td class="score-pass">—</td></tr><tr><td>Feedback Mechanics</td><td class="score-pass">—</td></tr><tr><td>Question Focus</td><td class="score-pass">—</td></tr><tr><td><strong>Average</strong></td><td class="score-avg">—</td></tr></table><p style="color:#A09A82;font-size:0.72rem;margin-top:10px;">Scores from your Langfuse evaluation will go here</p></div>
+        <div class="result-table-card"><div class="table-label">Question B</div><table class="result-table"><tr><th>Evaluator</th><th>Score</th></tr><tr><td>Evidence Grounding</td><td class="score-pass">—</td></tr><tr><td>Syllabus Scope</td><td class="score-pass">—</td></tr><tr><td>Construct Alignment</td><td class="score-pass">—</td></tr><tr><td>Feedback Mechanics</td><td class="score-pass">—</td></tr><tr><td>Question Focus</td><td class="score-pass">—</td></tr><tr><td><strong>Average</strong></td><td class="score-avg">—</td></tr></table><p style="color:#A09A82;font-size:0.72rem;margin-top:10px;">Scores from your Langfuse evaluation will go here</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="height:60px;"></div>
+
+<script>
+function toggleFc(el) { el.classList.toggle('open'); }
+function toggleEval(el) {
+  if (event.target.closest('.dropdown-toggle') || event.target.closest('.prompt-dropdown')) return;
+  el.classList.toggle('open');
+}
+function toggleDropdown(e, btn) {
+  e.stopPropagation();
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+function scrollTo_(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+const sections = ['overview','prompts','flowchart','evaluators','scoring','results'];
+const navBtns = document.querySelectorAll('.nav-btn');
+window.addEventListener('scroll', () => {
+  let current = sections[0];
+  for (const id of sections) { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top <= 80) current = id; }
+  navBtns.forEach((btn, i) => { btn.classList.toggle('active', sections[i] === current); });
+});
+</script>
+</body>
+</html>
