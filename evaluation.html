@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAFA Feedback Outputs — Markly AI</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F6F4F0;
+  --card: #FFFFFF;
+  --ink: #1A1A1A;
+  --muted: #6B6560;
+  --olive: #5C5A2E;
+  --olive-light: #EDECD4;
+  --olive-bg: #3D3B1E;
+  --gold: #B8A44C;
+  --gold-light: #F5F0D8;
+  --teal: #1B6B5A;
+  --teal-light: #D4F0E9;
+  --coral: #A0413A;
+  --coral-light: #FCEAE8;
+  --border: #DDD9D3;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 6px 16px rgba(0,0,0,0.04);
+  --shadow-hover: 0 2px 6px rgba(0,0,0,0.08), 0 10px 28px rgba(0,0,0,0.07);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+
+/* NAV */
+.nav { position: sticky; top: 0; z-index: 100; background: var(--olive-bg); padding: 12px 24px; display: flex; gap: 12px; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.nav a { color: #E8E4D8; text-decoration: none; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); transition: all 0.2s; }
+.nav a:hover { background: rgba(255,255,255,0.18); color: #fff; }
+.nav-title { color: var(--gold); font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 700; margin-right: auto; }
+
+/* HEADER */
+.page-header { text-align: center; padding: 48px 24px 32px; max-width: 800px; margin: 0 auto; }
+.page-header h1 { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.page-header p { color: var(--muted); font-size: 1rem; }
+
+/* TABS */
+.tabs { display: flex; justify-content: center; gap: 8px; padding: 0 24px 32px; }
+.tab { padding: 10px 24px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: 2px solid var(--border); background: var(--card); color: var(--muted); transition: all 0.2s; }
+.tab:hover { border-color: var(--olive); color: var(--olive); }
+.tab.active { background: var(--olive-bg); color: var(--gold); border-color: var(--olive-bg); }
+
+/* STATS */
+.stats-bar { display: flex; justify-content: center; gap: 24px; padding: 0 24px 32px; flex-wrap: wrap; }
+.stat { text-align: center; }
+.stat-num { font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 700; color: var(--olive); }
+.stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+
+/* ENTRIES */
+.entries { max-width: 860px; margin: 0 auto; padding: 0 24px 60px; }
+.entry-index { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); background: var(--bg); padding: 2px 10px; border-radius: 5px; display: inline-block; margin-bottom: 16px; }
+.entry { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; transition: box-shadow 0.25s; }
+.entry:hover { box-shadow: var(--shadow-hover); }
+
+.entry-highlight { padding: 20px 24px; border-bottom: 1px solid var(--border); cursor: pointer; position: relative; }
+.entry-highlight::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--coral); border-radius: 0 2px 2px 0; }
+.entry-highlight blockquote { font-size: 0.92rem; color: var(--ink); line-height: 1.7; font-style: italic; margin: 0; padding-left: 16px; border-left: 3px solid var(--border); }
+.entry-toggle { font-size: 0.72rem; color: #B8B2AA; margin-top: 8px; display: inline-block; }
+.entry.open .entry-toggle { display: none; }
+
+.entry-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease, opacity 0.3s ease; opacity: 0; }
+.entry.open .entry-body { max-height: 2000px; opacity: 1; }
+.entry-body-inner { padding: 20px 24px; }
+
+.entry-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.meta-tag { font-size: 0.75rem; padding: 4px 12px; border-radius: 6px; font-weight: 600; }
+.meta-ao { background: #E3EDF7; color: #3A5A8C; }
+.meta-kr { background: var(--olive-light); color: var(--olive); }
+
+.entry-kr { background: var(--bg); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; }
+.entry-kr-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 4px; }
+.entry-kr-phrase { font-size: 0.85rem; color: var(--ink); font-style: italic; }
+
+.entry-feedback { font-size: 0.88rem; color: var(--ink); line-height: 1.75; }
+.entry-feedback-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--teal); margin-bottom: 6px; }
+
+/* REFERENCE CARD (special first entry for Q2a) */
+.ref-card { border-left: 4px solid var(--gold); }
+.ref-card .entry-highlight::before { background: var(--gold); }
+.ref-badge { display: inline-block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 4px; background: var(--gold-light); color: var(--olive); margin-bottom: 8px; }
+
+/* EMPTY STATE */
+.empty { text-align: center; padding: 60px 24px; color: var(--muted); }
+
+@media (max-width: 600px) {
+  .page-header h1 { font-size: 1.5rem; }
+  .tabs { flex-direction: column; align-items: center; }
+  .stats-bar { gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-title">Markly AI</span>
+  <a href="index.html">← Back to Evaluation</a>
+</nav>
+
+<div class="page-header">
+  <h1>SAFA Prompt — Feedback Outputs</h1>
+  <p>Every feedback entry the SAFA (original) prompt generated when grading 25 student essays per question. Click any entry to expand.</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showQuestion('2a')">Question A — Explain Effects</button>
+  <button class="tab" onclick="showQuestion('2b')">Question B — How Far Do You Agree</button>
+</div>
+
+<div class="stats-bar" id="stats-bar"></div>
+
+<div class="entries" id="entries"></div>
+
+<script>
+const DATA = {"question_2a": {"SAFA_reference_style": {"highlighted_text": "Tropical deforestation is deforestation, the removal of trees via logging or economic purposes such as manufacturing pulp, that occurs in tropical countries typically located between 30° latitude of the equator. It often impacts countries of low levels of development as most tropical rainforests are found there.", "assessment_objective": "Demonstrate understanding of key concepts and provide relevant context", "knowledge_reference": {"supporting_phrase": "Tropical deforestation is deforestation, the removal of trees via logging or economic purposes such as manufacturing pulp"}, "AI_feedback": "You've provided a clear definition of tropical deforestation and its geographical context, which is an excellent way to start your response. Your explanation shows good understanding of the concept and its relevance to countries at low levels of development. To enhance this further, you could consider mentioning specific types of economic activities that drive deforestation in these regions, such as agriculture or mining."}, "feedback_entries": [{"highlighted_text": "Tropical deforestation comes with many social, economic and environmental impacts. This is especially so for less developed countries and this could hinder their development in the long run, making it unsustainable if they were to continue their rate of deforestation. Some of the impact could include loss of potential revenue, flooding or air and water pollution. This could thus lead to adverse impact on the economy.", "assessment_objective": "Provide a clear and focused introduction that addresses the question", "knowledge_reference": {"supporting_phrase": "Tropical deforestation comes with many social, economic and environmental impacts."}, "AI_feedback": "You've made a good start by identifying that tropical deforestation has multiple impacts across social, economic, and environmental dimensions. Your introduction provides a general overview of the topic and touches on some key points like revenue loss and flooding. To strengthen your response further, try to more explicitly link these impacts to how they affect countries at a low level of development, such as explaining why these countries might be particularly vulnerable to the effects of deforestation. Additionally, consider organizing your main points more clearly in the introduction to provide a roadmap for the rest of your essay."}, {"highlighted_text": "Countries at low level of development con he affected by tropical deforestation, which is the conversion of forests to permanent non-forested uses such as agricultural farms, cattle ranches and logging. Some impacts which lesser developed countries (LDCs) may face are increased export earnings, landslides, less of biodiversity and climate change.", "assessment_objective": "Demonstrate clear understanding of the question and provide a focused introduction", "knowledge_reference": {"supporting_phrase": "Countries at low level of development con he affected by tropical deforestation"}, "AI_feedback": "You've made a strong start by directly addressing the question about how tropical deforestation affects countries at a low level of development. Your definition of tropical deforestation is accurate and relevant, and you've provided a good overview of both positive and negative impacts. To enhance your introduction further, consider organizing your points into economic, environmental, and social categories, as this would provide a clearer structure for your essay. Also, be careful with spelling — 'con he' should be 'can be', and 'less of biodiversity' should be 'loss of biodiversity' — as attention to these details will make your writing more precise and professional."}, {"highlighted_text": "Moreover, transnational corporations (TNCs) from Developed Countries (DCs) may set up in LDCs with forested areas such as Brazil, where about 40% of the Amazon rainforest lies in, and promise the sharing of economic profits to the host country. However as the headquarters of the TNC are unlikely to establish in LDCs, LDCs may experience more economic leakages than deserved gains. Hence deforestation in LDCS would benefit the economy of LDCs slightly.", "assessment_objective": "Analyze the economic impact of deforestation on less developed countries", "knowledge_reference": {"supporting_phrase": "LDCs may experience more economic leakages than deserved gains"}, "AI_feedback": "You've made a good point about the role of transnational corporations in deforestation and their economic impact on less developed countries. Your analysis shows understanding of the complex economic relationships between developed countries and LDCs, particularly the concept of economic leakages. To strengthen your argument, you could elaborate on economic leakages with specific examples and consider discussing the long-term economic consequences of deforestation for LDCs, such as the loss of sustainable forest-based industries or ecotourism potential."}, {"highlighted_text": "Tropical deforestation may occur in countries at a low level of development (LDCs) for the sake of economic growth. For example a substantial portion of Indonesia's GDP is contributed by the palm oil industry, for which mass tropical deforestation occurs to make way for plantations.", "assessment_objective": "Demonstrate understanding of how tropical deforestation affects low development countries economically", "knowledge_reference": {"supporting_phrase": "a substantial portion of Indonesia's GDP is contributed by the palm oil industry"}, "AI_feedback": "You've made an excellent start by identifying economic growth as a key driver of tropical deforestation in low development countries. Your example of Indonesia's palm oil industry is particularly relevant and shows good application of knowledge to real-world situations. To further strengthen your answer, you could explore more deeply how this economic activity specifically affects the country's development."}, {"highlighted_text": "First of all, tropical deforestation could lead to a loss in total potential revenue of an economy. This is due to the forest could bring about revenue from tourism or even possible and medical research due to the possible medicinal herbs that could be found from within. Hence, by engaging in tropical deforestation, this could lead to a loss in revenue of such sectors.", "assessment_objective": "Explain how tropical deforestation may affect countries at a low level of development", "knowledge_reference": {"supporting_phrase": "loss in total potential revenue of an economy"}, "AI_feedback": "You've made a strong start in explaining how tropical deforestation can negatively impact countries at a low level of development, particularly through the loss of potential revenue from tourism and medical research. To strengthen your argument further, you could elaborate on how this loss of revenue specifically affects development efforts in these countries."}, {"highlighted_text": "Firstly, tropical deforestation affects countries at low levels of development (LDCs) via soil erosion. This is as a poor role of government leads to indiscriminate logging and removal of trees such that vegetation roots no longer binds the soil together, making topsoil susceptible to erosion by water, especially since countries in the humid tropics receive abundant rainfall. For example, in the Ivory Coast, the country loses 800 million tonnes of topsoil a year.", "assessment_objective": "Cause-effect", "knowledge_reference": {"supporting_phrase": "tropical deforestation affects countries at low levels of development (LDCs) via soil erosion"}, "AI_feedback": "Your explanation of how tropical deforestation affects low-development countries through soil erosion is well-structured and detailed. You've effectively linked poor governance to indiscriminate logging and explained the process of soil erosion clearly, while the specific example from the Ivory Coast strengthens your argument significantly. To further improve, you could consider expanding on the long-term consequences of soil erosion for these countries."}, {"highlighted_text": "Tropical deforestation involves the cutting down of trees, typically in forested areas, by the masses, in order to cater to domestic or global demands for certain goods. Countries at low levels of development are usually also low-income countries that are rapidly industralising and urbanising.", "assessment_objective": "Explain how tropical deforestation may affect countries at a low level of development", "knowledge_reference": {"supporting_phrase": "tropical deforestation would have economic, social, and environmental impacts on these countries"}, "AI_feedback": "You've made a strong start by providing a clear definition of tropical deforestation and its connection to countries at low levels of development. Your introduction effectively outlines the main areas of impact — economic, social, and environmental — which sets up a good structure for your essay."}, {"highlighted_text": "Due to deforestation, trees and plants are eliminated which would otherwise remove carbon dioxide in the atmosphere and thus slow down the impact of global warming. Additionally, exposed soil surfaces vent out carbon dioxide due to the rapid decomposition of organic matter. Scientists estimate that global deforestation is responsible for about 2 billion tonnes of carbon dioxide emitted each year.", "assessment_objective": "Cause-effect", "knowledge_reference": {"supporting_phrase": "Due to deforestation, trees and plants are eliminated which would otherwise remove carbon dioxide in the atmosphere"}, "AI_feedback": "You've effectively explained the cause-effect relationship between deforestation and increased carbon dioxide levels, and your use of specific data about 2 billion tonnes of carbon dioxide strengthens your explanation. To take this further, you could explicitly link this effect to impacts on LDCs."}, {"highlighted_text": "Furthermore, LDCs may be negatively affected in a social aspect as a result of deforestation, as it can facilitate natural disasters that ruin people's livelihood. With trees removed, top soil is exposed, and landscapes with an impermeable vode base but porous and permeable topsoil would experience an increase in shear stress.", "assessment_objective": "Cause-effect", "knowledge_reference": {"supporting_phrase": "Hence this can lead to mass movements like landslides"}, "AI_feedback": "You've effectively identified a key social impact of deforestation on LDCs — the increased risk of natural disasters like landslides — and your explanation includes a clear cause-effect chain linking deforestation to soil exposure, changes in shear stress, and ultimately to mass movements."}, {"highlighted_text": "Without roots, especially deep roots of rainforest foliage, binding soil particles together, they are susceptible to being washed away by the frequent and intense convectional rainfall of the tropics, which could only increase in extremity with climate change.", "assessment_objective": "Cause-effect", "knowledge_reference": {"supporting_phrase": "Without roots, especially deep roots of rainforest foliage, binding soil particles together, they are susceptible to being washed away"}, "AI_feedback": "Your explanation effectively demonstrates the cause-effect relationship between tropical deforestation and soil erosion, clearly identifying how the removal of tree roots leads to increased soil susceptibility to erosion in the tropical climate context."}, {"highlighted_text": "Tropical deforestation involve the cutting down of rainforests which are vital carbon sinks, meaning not only is the capacity for carbon sequestration reduced, the previously sequestered carbon is re-released into the atmosphere", "assessment_objective": "Cause-effect", "knowledge_reference": {"supporting_phrase": "previously sequestered carbon is re-released into the atmosphere"}, "AI_feedback": "You've correctly identified a key effect of tropical deforestation — the release of stored carbon — which demonstrates good understanding of forests as carbon sinks. Your explanation effectively links deforestation to both reduced carbon sequestration capacity and the release of previously stored carbon."}, {"highlighted_text": "This large amount of sedimentation that occurs causes there to be a role in the river bed and a reduction of the channel capacity. Thus, in the event of a prolonged rainfall or high discharge, this would thus cause significant flooding to occur. Much like that in the village downstream from the river in Madagascar which has significant flooding that occurs annually, taking over 80,000 lives over the course of 10 years from 2005 to 2015.", "assessment_objective": "Cause-effect", "knowledge_reference": {"supporting_phrase": "This large amount of sedimentation that occurs causes there to be a role in the river bed and a reduction of the channel capacity."}, "AI_feedback": "You've effectively established a clear cause-effect relationship between deforestation, sedimentation, and flooding, and the specific example from Madagascar strengthens your argument with concrete evidence. To improve this further, you could clarify the phrase 'role in the river bed' — perhaps you meant 'rise in the river bed'."}, {"highlighted_text": "Costa Rica loses 860 million tonnes of valuable top soil each year and this affects fertility of crop as there is a lack of nutrients which makes it hard for crops to grow and thus can affect LDCs significantly who are reliant on the export of primary goods such as crops.", "assessment_objective": "Cause-effect", "knowledge_reference": {"supporting_phrase": "Costa Rica loses 860 million tonnes of valuable top soil each year"}, "AI_feedback": "You've effectively used a specific example from Costa Rica to illustrate the impact of deforestation on soil erosion in an LDC, and you've linked this environmental impact to economic consequences for countries reliant on crop exports."}, {"highlighted_text": "On average, a loss of around 10 billion USD worth of revenue due to deforestation globally. If that were to be pumped into the development of some less developed countries instead, they could have a much less financial burden on their hands.", "assessment_objective": "Explain how tropical deforestation may affect countries at a low level of development", "knowledge_reference": {"supporting_phrase": "10 billion USD worth of revenue due to deforestation globally"}, "AI_feedback": "You've made a good attempt to quantify the economic impact of deforestation using the $10 billion global figure, which helps illustrate the scale of the issue. To strengthen your argument, you could explain how this global figure specifically relates to countries at a low level of development."}, {"highlighted_text": "Countries can also experience economical loses from deforestation as well as the soil may be affected by deforestation, which can crop growth and their profits. Due to deforestation, there is a lack of interception storage and thus sheet wash occurs and the soil compacts.", "assessment_objective": "Cause-effect", "knowledge_reference": {"supporting_phrase": "overland flow may result in the erosion of top soil"}, "AI_feedback": "You've effectively identified soil erosion as a consequence of deforestation and attempted to explain the process leading from lack of interception storage to sheet wash and soil erosion, showing awareness of the causal chain."}]}, "question_2b": {"feedback_entries": [{"highlighted_text": "Apart from not being able to stop tropical deforestation from happening, there are also several ways which professionals have researched and developed to help mitigate the effects of tropical deforestation. For example, Singapore has rules and regulations ensuring certain locations' trees must be kept and conserved.", "assessment_objective": "Evaluation and synoptic thinking", "AI_feedback": "You've done well to introduce a counterargument and provide a specific example of Singapore's approach to managing deforestation, which shows good evaluative skills and synoptic thinking."}, {"highlighted_text": "While the rates of tropical deforestation have declined over the years, it has not declined to a sustainable rate as deforestation today still continues to outstrip the rates of natural renewal that ecosystems are capable of.", "assessment_objective": "Evaluative element and focus on the question", "AI_feedback": "Your opening statement demonstrates a strong evaluative approach to the question, effectively acknowledging a decline in deforestation rates while critically assessing its sustainability."}, {"highlighted_text": "Multilateral cooperation of various stakeholders is required to mitigate tropical deforestation. Firstly, governments must make prudent decisions and implement and enforce stricter environmental regulations. Secondly, transnational corporations (TNCS) must practice corporate social responsibility. For example FSC-certified paper and Rainforest-Alliance certified coffee.", "assessment_objective": "Evaluation and synoptic thinking", "AI_feedback": "You've done an excellent job presenting a balanced evaluation by suggesting multilateral cooperation as a solution to mitigate tropical deforestation. Your discussion of the roles of both governments and transnational corporations demonstrates synoptic thinking."}, {"highlighted_text": "Norway and Indonesia agreed on REDD+ agreement in 2010 which would pay Indonesia based on the evaluations of their performance in reducing deforestation. This helped to decrease deforestation as seen in 2017 where the rates of deforestation decreased by 60% of their 2016 rates. However the deal was only partially successful as the government in Indonesia decided to cancel the deal with Norway.", "assessment_objective": "Evaluative element and synoptic thinking", "AI_feedback": "Your discussion of the REDD+ agreement between Norway and Indonesia demonstrates good evaluative skills and synoptic thinking, effectively showing how financial incentives can impact deforestation rates with specific data."}, {"highlighted_text": "Though stopping may not be foreseeable goal in the next decade, slowing the rate is certainly possible and has already been done. Through an increased fairer legislation and consumer's money.", "assessment_objective": "Evaluation and argumentation", "AI_feedback": "You've made a good start in evaluating the possibility of stopping tropical deforestation, showing nuanced thinking by distinguishing between complete cessation and rate reduction."}, {"highlighted_text": "In Brazil, 1/3 of the land in protected areas with the highest level of control possible. Between 2000 and 2001, Brazil was able to create 487000km² of protected areas. This was successful in decreasing deforestation as the rates of deforestation fell by 38% from 2004-2006.", "assessment_objective": "Use of relevant examples and data to support arguments", "AI_feedback": "You've done a great job incorporating specific data and examples to support your argument about the effectiveness of protected areas in reducing deforestation."}, {"highlighted_text": "Thus with so many factors leading to tropical deforestation, It is rot possible to fully stop tropical deforestation.", "assessment_objective": "Evaluation and coherence of argument", "AI_feedback": "Your opening statement presents a clear stance on the question, which is good for establishing your argument. However, be careful with typos — 'rot' should be 'not'."}, {"highlighted_text": "Countries may be able to stop deforestation if they implement policies to counter deforestation. These can be done through policies such as the creation of protected areas. In Brazil, 1/3 of the land in protected areas with the highest level of control possible.", "assessment_objective": "Evaluating the effectiveness of policies to counter deforestation", "AI_feedback": "You've provided a strong example of how countries can implement policies to mitigate deforestation, with Brazil's protected areas serving as an effective case study supported by specific data."}, {"highlighted_text": "Firstly, it is not possible to stop tropical deforestation because of how reliant LDCs' economies are on it. This is because LDCs have burgeoning populations and require jobs to support the livelihoods of a young, low-skilled workforce.", "assessment_objective": "Evaluative element and depth of understanding", "AI_feedback": "You've made a strong start by presenting a clear argument about why it's not possible to stop tropical deforestation, showing good understanding of the complex economic issues involved."}, {"highlighted_text": "Even though deforestation cannot be fully stopped, there are chances of reducing it, as governments globally implement tariffs and quotas to prevent corporations from overtaking local industries.", "assessment_objective": "Balanced Evaluation", "AI_feedback": "You've done well in presenting a balanced evaluation by acknowledging that while deforestation cannot be fully stopped, there are possibilities for reduction through government policies and technological advancements."}, {"highlighted_text": "While this is true in the present, ground-up initiatives and governments are still trying to reduce reliance on deforestation. For example, the REDD+ project in Cambodia was successful in protecting 70% of the Seima Protection Forest due to joint efforts by the indigenous Ponnong people, the Cambodian Forestry Association, and the Wildlife Conservation Society.", "assessment_objective": "Balanced Evaluation", "AI_feedback": "You've done well in presenting a balanced evaluation by acknowledging efforts to reduce deforestation despite economic challenges, and your REDD+ Cambodia example effectively illustrates how ground-up initiatives can lead to positive outcomes."}, {"highlighted_text": "Singapore, as one of the Southeast Asian countries with many green plants, also had campaigns on replanting trees on rooftops of HDB flats or green buildings such as NTU buildings. Singapore also implemented solar energy to generate power for HDB flats.", "assessment_objective": "Evaluation and synoptic thinking", "AI_feedback": "You've done well to provide a specific example of how Singapore is mitigating the effects of deforestation, and your discussion demonstrates good synoptic thinking by connecting urban planning, renewable energy, and environmental conservation."}, {"highlighted_text": "For example, in 2015, Indonesia forestry exports amounted to a total of $3.2 billion USD and the number has grown ever since. The economic incentive to stop deforestation on the other hand is low – the REDD+ partnership between Indonesia and Norway fell through largely because the financial incentives raised by Norway ($1 billion USD) pales in comparison.", "assessment_objective": "Balanced Evaluation", "AI_feedback": "You've effectively used specific evidence to illustrate the economic incentives for deforestation, and the comparison between Indonesia's forestry export value and the REDD+ incentive clearly demonstrates why stopping deforestation is challenging."}, {"highlighted_text": "Overall, it is unlikely that deforestation would fully stop, but mitigation is possible, and the outcome depends on government decisions and intervention.", "assessment_objective": "Balanced Evaluation", "AI_feedback": "You've presented a balanced conclusion that effectively acknowledges both the difficulty of stopping deforestation completely and the possibility of mitigation."}, {"highlighted_text": "Hence the onus is on governments to recognise the long term inherent value of the natural environment over short term economic growth and more strictly safeguard against the exploitation of their land and labour by predatory TNCs.", "assessment_objective": "Balanced Evaluation", "AI_feedback": "You've done well in considering the role of governments in addressing deforestation, recognizing the conflict between long-term environmental value and short-term economic growth."}]}};
+
+let currentQ = '2a';
+
+function showQuestion(q) {
+  currentQ = q;
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', (i === 0 && q === '2a') || (i === 1 && q === '2b'));
+  });
+  render();
+}
+
+function render() {
+  const key = currentQ === '2a' ? 'question_2a' : 'question_2b';
+  const qData = DATA[key];
+  const entries = qData.feedback_entries || [];
+  const hasRef = qData.SAFA_reference_style;
+
+  // Stats
+  const total = entries.length + (hasRef ? 1 : 0);
+  const aos = new Set();
+  entries.forEach(e => aos.add(e.assessment_objective));
+  if (hasRef) aos.add(hasRef.assessment_objective);
+
+  document.getElementById('stats-bar').innerHTML = `
+    <div class="stat"><div class="stat-num">${total}</div><div class="stat-label">Feedback entries</div></div>
+    <div class="stat"><div class="stat-num">${aos.size}</div><div class="stat-label">Unique AOs used</div></div>
+    <div class="stat"><div class="stat-num">25</div><div class="stat-label">Student essays</div></div>
+  `;
+
+  // Entries
+  let html = '';
+
+  if (hasRef) {
+    html += renderEntry(hasRef, 0, true);
+  }
+
+  entries.forEach((e, i) => {
+    html += renderEntry(e, i + (hasRef ? 1 : 0), false);
+  });
+
+  document.getElementById('entries').innerHTML = html;
+}
+
+function renderEntry(e, idx, isRef) {
+  const kr = e.knowledge_reference;
+  const refClass = isRef ? ' ref-card' : '';
+  const refBadge = isRef ? '<span class="ref-badge">Reference Style Example</span>' : '';
+
+  return `
+    <div class="entry${refClass}" onclick="this.classList.toggle('open')">
+      <div class="entry-highlight">
+        ${refBadge}
+        <span class="entry-index">Entry ${idx + 1}</span>
+        <blockquote>${escHtml(e.highlighted_text)}</blockquote>
+        <span class="entry-toggle">Click to expand ↓</span>
+      </div>
+      <div class="entry-body"><div class="entry-body-inner">
+        <div class="entry-meta">
+          <span class="meta-tag meta-ao">${escHtml(e.assessment_objective)}</span>
+        </div>
+        ${kr ? `<div class="entry-kr">
+          <div class="entry-kr-label">Supporting Phrase (Knowledge Reference)</div>
+          <div class="entry-kr-phrase">"${escHtml(kr.supporting_phrase)}"</div>
+        </div>` : ''}
+        <div class="entry-feedback">
+          <div class="entry-feedback-label">AI Feedback</div>
+          ${escHtml(e.AI_feedback)}
+        </div>
+      </div></div>
+    </div>
+  `;
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+render();
+</script>
+</body>
+</html>
