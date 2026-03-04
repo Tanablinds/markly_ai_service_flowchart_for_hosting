@@ -306,24 +306,24 @@ function renderScoreChips(scores) {
   return h;
 }
 
-function avgScore(entries, key) {
-  var vals = []; entries.forEach(function(e) { var v = e.eval_scores ? e.eval_scores[key] : null; if (v!=null) vals.push(v); });
-  return vals.length ? vals.reduce(function(a,b){return a+b;},0)/vals.length : null;
-}
+// function avgScore(entries, key) {
+//   var vals = []; entries.forEach(function(e) { var v = e.eval_scores ? e.eval_scores[key] : null; if (v!=null) vals.push(v); });
+//   return vals.length ? vals.reduce(function(a,b){return a+b;},0)/vals.length : null;
+// }
 
-function renderStats(safa, markly) {
-  var sAll=[], mAll=[];
-  for (var k in SCORE_LABELS) { var sv=avgScore(safa,k),mv=avgScore(markly,k); if(sv!=null)sAll.push(sv); if(mv!=null)mAll.push(mv); }
-  var sM = sAll.length ? (sAll.reduce(function(a,b){return a+b;},0)/sAll.length) : null;
-  var mM = mAll.length ? (mAll.reduce(function(a,b){return a+b;},0)/mAll.length) : null;
-  var sS = avgScore(safa,'feedback_style'), mS = avgScore(markly,'feedback_style');
-  document.getElementById('stats-row').innerHTML =
-    '<div class="stat-card"><div class="stat-value" style="color:var(--coral)">'+safa.length+'</div><div class="stat-label">SAFA Entries</div></div>'+
-    '<div class="stat-card"><div class="stat-value" style="color:var(--indigo)">'+markly.length+'</div><div class="stat-label">Markly Entries</div></div>'+
-    '<div class="stat-card"><div class="stat-value" style="color:var(--coral)">'+(sM!=null?sM.toFixed(2):'—')+'</div><div class="stat-label">SAFA Avg Score</div></div>'+
-    '<div class="stat-card"><div class="stat-value" style="color:var(--indigo)">'+(mM!=null?mM.toFixed(2):'—')+'</div><div class="stat-label">Markly Avg Score</div></div>'+
-    '<div class="stat-card"><div class="stat-value" style="color:var(--teal)">'+(sS!=null?sS.toFixed(2):'—')+' / '+(mS!=null?mS.toFixed(2):'—')+'</div><div class="stat-label">Style (S / M)</div></div>';
-}
+// function renderStats(safa, markly) {
+//   var sAll=[], mAll=[];
+//   for (var k in SCORE_LABELS) { var sv=avgScore(safa,k),mv=avgScore(markly,k); if(sv!=null)sAll.push(sv); if(mv!=null)mAll.push(mv); }
+//   var sM = sAll.length ? (sAll.reduce(function(a,b){return a+b;},0)/sAll.length) : null;
+//   var mM = mAll.length ? (mAll.reduce(function(a,b){return a+b;},0)/mAll.length) : null;
+//   var sS = avgScore(safa,'feedback_style'), mS = avgScore(markly,'feedback_style');
+//   document.getElementById('stats-row').innerHTML =
+//     '<div class="stat-card"><div class="stat-value" style="color:var(--coral)">'+safa.length+'</div><div class="stat-label">SAFA Entries</div></div>'+
+//     '<div class="stat-card"><div class="stat-value" style="color:var(--indigo)">'+markly.length+'</div><div class="stat-label">Markly Entries</div></div>'+
+//     '<div class="stat-card"><div class="stat-value" style="color:var(--coral)">'+(sM!=null?sM.toFixed(2):'—')+'</div><div class="stat-label">SAFA Avg Score</div></div>'+
+//     '<div class="stat-card"><div class="stat-value" style="color:var(--indigo)">'+(mM!=null?mM.toFixed(2):'—')+'</div><div class="stat-label">Markly Avg Score</div></div>'+
+//     '<div class="stat-card"><div class="stat-value" style="color:var(--teal)">'+(sS!=null?sS.toFixed(2):'—')+' / '+(mS!=null?mS.toFixed(2):'—')+'</div><div class="stat-label">Style (S / M)</div></div>';
+// }
 
 function setQuestion(q) { currentQ = q; currentStudent = 'A'; render(); }
 function setStudent(s) { currentStudent = s; render(); }
@@ -346,7 +346,7 @@ function render() {
   var mkly = qData.Markly.filter(function(e){return e.student_essay===label;});
   var essay = qData.student_essays[label] || 'Essay not available.';
 
-  renderStats(safa, mkly);
+  // renderStats(safa, mkly);
   document.getElementById('topic-banner').innerHTML = '<div class="topic-inner"><div class="topic-label">Essay Question</div>'+esc(qData.topic)+'</div>';
   document.getElementById('essay-panel').innerHTML =
     '<div class="essay-card" onclick="this.classList.toggle(\'open\')"><div class="essay-header"><h3>'+label+' — Full Essay Response</h3><span class="essay-toggle">&#9660;</span></div><div class="essay-body"><div class="essay-text">'+esc(essay)+'</div></div></div>';
