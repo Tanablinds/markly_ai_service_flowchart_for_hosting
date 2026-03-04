@@ -14,7 +14,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -34,7 +34,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -54,7 +54,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -85,7 +85,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -105,7 +105,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -125,7 +125,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -144,8 +144,8 @@
     "output": "Here is my feedback on one piece of quoted text from the essay:\n\n{\n  \"feedback\": [\n    {\n      \"highlighted_text\": \"First of all, tropical deforestation could lead to a loss in total potential revenue of an economy. This is due to the forest could bring about revenue from tourism or even possible and medical research due to the possible medicinal herbs that could be found from within. Hence, by engaging in tropical deforestation, this could lead to a loss in revenue of such sectors. This could in turn affect less developed countries heavily as they would lose financial gain from such sectors which is highly needed in order to further develop their own economy. On average, a loss of around 10 billion USD worth of revenue due to deforestation globally.\",\n      \"assessment_objective\": \"Explain how tropical deforestation may affect countries at a low level of development\",\n      \"knowledge_reference\": {\n          \"supporting_phrase\": \"loss in total potential revenue of an economy\"\n        },\n      \"AI_feedback\": \"You've made a strong start in explaining how tropical deforestation can negatively impact countries at a low level of development, particularly focusing on the economic aspect. Your point about the loss of potential revenue from tourism and medical research is insightful. To strengthen your argument further, you could elaborate on how this loss of revenue specifically affects development efforts in these countries. For instance, you might discuss how this lost income could have been used for infrastructure development, education, or healthcare improvements. Additionally, while the global figure of $10 billion is impactful, it would be even more relevant if you could provide specific examples or statistics related to low-development countries. Keep up the good work in linking deforestation to economic impacts!\"\n    }\n  ]\n}",
     "eval_scores": {
       "Scope alignment": 1,
-      "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "construct alignment": 0,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -165,7 +165,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -196,7 +196,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -216,7 +216,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -236,7 +236,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -256,7 +256,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -275,10 +275,10 @@
     "output": "I have carefully read the student's response. Based on the requirements, I will select one piece of quoted text from the essay to provide feedback. Here's the JSON output with the feedback:\n\n{\n  \"feedback\": [\n    {\n      \"highlighted_text\": \"On average, a loss of around 10 billion USD worth of revenue due to deforestation globally. If that were to be pumped into the development of some less developed countries instead, they could have a much less financial burden on their hands.\",\n      \"assessment_objective\": \"Explain how tropical deforestation may affect countries at a low level of development\",\n      \"knowledge_reference\": {\n        \"supporting_phrase\": \"10 billion USD worth of revenue due to deforestation globally\"\n      },\n      \"AI_feedback\": \"You've made a good attempt to quantify the economic impact of deforestation on less developed countries. Using specific figures like '10 billion USD' helps to illustrate the scale of the issue. However, to strengthen your argument, you could consider explaining how this global figure specifically relates to countries at a low level of development. For instance, you might discuss what proportion of this loss affects these countries, or provide examples of how this lost revenue could have been used for development projects. Additionally, try to cite the source of this statistic to enhance the credibility of your response. Remember, the question asks about the effects on countries at a low level of development specifically, so always try to relate your points back to this context.\"\n    }\n  ]\n}",
     "eval_scores": {
       "Scope alignment": 1,
-      "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "construct alignment": 0,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
-      "Evidence Grounding": 1
+      "Evidence Grounding": 0
     }
   },
   {
@@ -307,7 +307,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -327,7 +327,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -347,7 +347,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -367,7 +367,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -387,7 +387,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -407,7 +407,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -427,7 +427,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -447,7 +447,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -467,7 +467,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -487,7 +487,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -507,7 +507,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
@@ -527,7 +527,7 @@
     "eval_scores": {
       "Scope alignment": 1,
       "construct alignment": 1,
-      "Feedback Style": 0.5,
+      "Feedback Style": 0,
       "Question Focus Alignment": 1,
       "Evidence Grounding": 1
     }
