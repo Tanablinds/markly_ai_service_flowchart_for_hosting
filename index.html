@@ -302,15 +302,130 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
   </div>
   <div class="eval-grid">
 
-    <div class="eval-card" onclick="toggleEval(this)"><div class="eval-icon" style="background:var(--teal-light);color:var(--teal);">🔍</div><h3>Evidence Grounding</h3><p class="eval-desc">Are all claims traceable to specific quotes in the student's essay?</p><span class="expand-hint">Click for details ↓</span><div class="eval-detail"><div class="eval-detail-inner"><h4>What it checks</h4><ul><li><strong>Direct quote verification</strong> — every claim must be verifiable</li><li><strong>No unsubstantiated interpretations</strong> — can't assume student intention</li><li><strong>Accurate attribution</strong> — praise/critique must match what the student wrote</li></ul><h4>Violation examples</h4><ul><li><strong>False positive:</strong> "Your mention of X shows understanding of Y" — student never mentioned X</li><li><strong>False negative:</strong> "You should explain how..." — student already did</li><li><strong>Quote misrepresentation:</strong> Paraphrasing inaccurately</li></ul></div></div></div>
+    <!-- EVIDENCE GROUNDING -->
+    <div class="eval-card" onclick="toggleEval(this)">
+      <div class="eval-icon" style="background:var(--teal-light);color:var(--teal);">🔍</div>
+      <h3>Evidence Grounding</h3>
+      <p class="eval-desc">Are all claims traceable to specific quotes in the student's essay?</p>
+      <span class="expand-hint">Click for details ↓</span>
+      <div class="eval-detail"><div class="eval-detail-inner">
+        <h4>What it checks</h4>
+        <ul>
+          <li><strong>Direct quote verification</strong> — any claim about what the student wrote or didn't write must be verifiable through exact quotes or paraphrases from the essay</li>
+          <li><strong>No unsubstantiated interpretations</strong> — feedback must not infer the student's understanding, intent, or comprehension beyond what is explicitly written</li>
+          <li><strong>Contextual completeness</strong> — the entire essay must be evaluated before claiming something is absent; it may appear elsewhere or be implicitly addressed</li>
+          <li><strong>Accurate attribution</strong> — praise or critique must accurately reflect what the student actually wrote; don't credit analysis they didn't provide</li>
+        </ul>
+        <h4>Violation examples</h4>
+        <ul>
+          <li><strong>False positive attribution:</strong> "Your mention of X shows a clear understanding of Y" — when the student never mentioned X</li>
+          <li><strong>False negative omission:</strong> "Consider elaborating on how X occurs" — when the student already explained it elsewhere in the essay</li>
+          <li><strong>Unverifiable interpretation:</strong> "This shows you understand the concept of..." — inferring comprehension not evidenced in the text</li>
+          <li><strong>Selective context ignoring:</strong> "The connection between X and Y needs clarification" — when the student addressed it in a different paragraph</li>
+          <li><strong>Quote misrepresentation:</strong> "Your discussion of X..." — when the characterisation doesn't accurately reflect what was written</li>
+        </ul>
+      </div></div>
+    </div>
 
-    <div class="eval-card" onclick="toggleEval(this)"><div class="eval-icon" style="background:var(--olive-light);color:var(--olive);">📎</div><h3>Dataset Scope Alignment</h3><p class="eval-desc">Is the syllabus pointer supported by text in the student's essay?</p><span class="expand-hint">Click for details ↓</span><div class="eval-detail"><div class="eval-detail-inner"><h4>What it checks</h4><ul><li><strong>Direct content alignment</strong> — feedback must address what the student wrote</li><li><strong>Syllabus pointer fidelity</strong> — only invoke a syllabus concept if the essay engages with it</li><li><strong>Constructive scope limitation</strong> — suggestions should build on what's written</li></ul><h4>Violation examples</h4><ul><li><strong>Topic injection:</strong> "To improve, discuss biogeochemical cycles"</li><li><strong>Misaligned requirement:</strong> "You must include discussion of the knowledge reference"</li><li><strong>False gap:</strong> "You didn't address biodiversity loss" — based on syllabus, not the student's angle</li></ul></div></div></div>
+    <!-- DATASET SCOPE ALIGNMENT -->
+    <div class="eval-card" onclick="toggleEval(this)">
+      <div class="eval-icon" style="background:var(--olive-light);color:var(--olive);">📎</div>
+      <h3>Dataset Scope Alignment</h3>
+      <p class="eval-desc">Is the syllabus pointer supported by text in the student's essay?</p>
+      <span class="expand-hint">Click for details ↓</span>
+      <div class="eval-detail"><div class="eval-detail-inner">
+        <h4>What it checks</h4>
+        <ul>
+          <li><strong>Syllabus grounding</strong> — feedback must only reference content explicitly present in the syllabus provided in the input prompt; no new concepts or frameworks should be introduced</li>
+          <li><strong>Content alignment</strong> — feedback must directly address the specific knowledge reference in the syllabus, not suggest alternative or tangential topics</li>
+          <li><strong>Targeted improvement guidance</strong> — suggestions should enhance the student's response within the existing scope (e.g., quality of causal explanation), not redirect toward unrelated syllabus content</li>
+          <li><strong>Scope boundaries</strong> — when a student's response doesn't address part of the syllabus, feedback should clarify the gap rather than treat it as a required deficiency</li>
+        </ul>
+        <h4>Violation examples</h4>
+        <ul>
+          <li><strong>Out-of-scope topic introduction:</strong> Suggesting discussion of "biogeochemical cycles" when the syllabus and student response focus on economic causation</li>
+          <li><strong>Scope creep in requirements:</strong> "Minimum requirement: Address how disruption of biogeochemical cycles impacts sustainability" — when this topic isn't in the syllabus</li>
+          <li><strong>Indirect suggestion masquerading as gap-filling:</strong> "To improve, discuss potential environmental trade-offs" — when environmental impacts aren't part of the syllabus</li>
+          <li><strong>Conflation of partial relevance:</strong> Acknowledging a topic wasn't in the student's response, then still framing its inclusion as necessary for improvement despite being out of scope</li>
+        </ul>
+      </div></div>
+    </div>
 
-    <div class="eval-card" onclick="toggleEval(this)"><div class="eval-icon" style="background:var(--slate-light);color:var(--slate);">🎯</div><h3>Construct Alignment</h3><p class="eval-desc">Does the feedback correctly match the assessment objective it references?</p><span class="expand-hint">Click for details ↓</span><div class="eval-detail"><div class="eval-detail-inner"><h4>What it checks</h4><ul><li><strong>Construct-content alignment</strong> — the named AO must match what the feedback discusses</li><li><strong>Primary issue identification</strong> — target the most significant quality gap</li><li><strong>Construct-specific vocabulary</strong> — "evaluation" ≠ "analysis"</li></ul><h4>Violation examples</h4><ul><li><strong>Mislabelling:</strong> AO says "Quality of Evaluation" but feedback addresses analytical depth</li><li><strong>Conflation:</strong> Treating "evaluation" and "analysis" as interchangeable</li><li><strong>Severity mismatch:</strong> "lacks coherence" vs "could be more coherent"</li></ul></div></div></div>
+    <!-- CONSTRUCT ALIGNMENT -->
+    <div class="eval-card" onclick="toggleEval(this)">
+      <div class="eval-icon" style="background:var(--slate-light);color:var(--slate);">🎯</div>
+      <h3>Construct Alignment</h3>
+      <p class="eval-desc">Does the feedback correctly match the assessment objective it references?</p>
+      <span class="expand-hint">Click for details ↓</span>
+      <div class="eval-detail"><div class="eval-detail-inner">
+        <h4>What it checks</h4>
+        <ul>
+          <li><strong>Construct-content alignment</strong> — the AO referenced in feedback must directly correspond to the actual quality issue in the student's response, grounded in the provided assessment objectives (not invented)</li>
+          <li><strong>Holistic response evaluation</strong> — the AI must evaluate the full response relative to rubrics, not isolate individual elements or demand dimensions outside the AO's scope</li>
+          <li><strong>Precise problem identification</strong> — the root cause of any deficiency must be accurately diagnosed before improvement suggestions are offered</li>
+          <li><strong>Proportionate feedback scope</strong> — suggestions should prioritise the most significant rubric-based weaknesses, not peripheral enhancements</li>
+        </ul>
+        <h4>Violation examples</h4>
+        <ul>
+          <li><strong>Construct misidentification:</strong> Referencing "Quality of Evaluation" when the response demonstrates analytical weakness, not evaluation weakness</li>
+          <li><strong>Partial response analysis:</strong> Criticising lack of specificity while ignoring that the response already meets core rubric criteria across other dimensions</li>
+          <li><strong>Root cause misdiagnosis:</strong> Suggesting more detailed support when the real issue is incomplete reasoning, not lack of evidence</li>
+          <li><strong>Misaligned improvement recommendations:</strong> Recommending deeper analysis of carbon cycles when the student already addresses the core construct well</li>
+          <li><strong>Construct conflation:</strong> Using "Evaluation" and "Analysis" interchangeably when they represent distinct rubric dimensions</li>
+        </ul>
+      </div></div>
+    </div>
 
-    <div class="eval-card" onclick="toggleEval(this)"><div class="eval-icon" style="background:var(--gold-light);color:var(--olive);">✍️</div><h3>Feedback Style</h3><p class="eval-desc">Does feedback follow the Feed Up / Feed Back / Feed Forward structure?</p><span class="expand-hint">Click for details ↓</span><div class="eval-detail"><div class="eval-detail-inner"><h4>What it checks</h4><ul><li><strong>Three-part structure</strong> — Feed Up (goal), Feed Back (strengths + gaps), Feed Forward (action steps)</li><li><strong>Specificity</strong> — must reference specific paragraphs/sentences</li><li><strong>3-2-1 rule</strong> — 3 strengths, 2 improvements max, 1 clear next step</li><li><strong>Actionable guidance</strong> — "Claim + Evidence + Explanation" not "Improve your argument"</li></ul><h4>Violation examples</h4><ul><li><strong>Missing component:</strong> Jumps to criticism without stating the learning goal</li><li><strong>Vague:</strong> "Good job" without specifics</li><li><strong>Over-commenting:</strong> 5+ improvements instead of prioritising 1–2</li></ul></div></div></div>
+    <!-- FEEDBACK STYLE -->
+    <div class="eval-card" onclick="toggleEval(this)">
+      <div class="eval-icon" style="background:var(--gold-light);color:var(--olive);">✍️</div>
+      <h3>Feedback Style</h3>
+      <p class="eval-desc">Does feedback follow the Feed Up / Feed Back / Feed Forward structure?</p>
+      <span class="expand-hint">Click for details ↓</span>
+      <div class="eval-detail"><div class="eval-detail-inner">
+        <h4>What it checks</h4>
+        <ul>
+          <li><strong>Evidence-based specificity</strong> — all claims must be grounded in concrete evidence from the student's work, with direct references to specific passages or sentences</li>
+          <li><strong>Actionable improvement guidance</strong> — feedback must include clear, executable next steps specific enough to guide revision while preserving student agency</li>
+          <li><strong>Pedagogical independence</strong> — feedback should build metacognitive skills through checkpoint questions and self-reflection prompts, not just provide answers</li>
+          <li><strong>Balanced strength-gap analysis</strong> — both strengths and gaps must be identified; exclusively deficit-focused or exclusively praise-focused feedback is a violation</li>
+          <li><strong>Measurable clarity</strong> — guidance must use clear criteria so students can objectively verify whether they have met the suggested improvements</li>
+        </ul>
+        <h4>Violation examples</h4>
+        <ul>
+          <li><strong>Unsupported claims:</strong> "Your writing is unclear" — no specific passage or sentence cited</li>
+          <li><strong>Vague improvement suggestions:</strong> "Try to improve your writing style" — not specific or actionable enough to guide revision</li>
+          <li><strong>Prescriptive over generative:</strong> "You should write: 'The protagonist's motivation stems from...'" — provides the answer instead of guiding the student to find it</li>
+          <li><strong>Imbalanced evaluation:</strong> Multiple paragraphs of criticism with no acknowledgment of what was done well</li>
+          <li><strong>Non-measurable guidance:</strong> "Add more depth to your analysis" — no criteria for what depth looks like or how to verify it</li>
+        </ul>
+      </div></div>
+    </div>
 
-    <div class="eval-card" onclick="toggleEval(this)"><div class="eval-icon" style="background:var(--coral-light);color:var(--coral);">❓</div><h3>Question Focus Alignment</h3><p class="eval-desc">Do all improvements directly strengthen the student's answer to the essay question?</p><span class="expand-hint">Click for details ↓</span><div class="eval-detail"><div class="eval-detail-inner"><h4>What it checks</h4><ul><li><strong>Direct question alignment</strong> — suggestions must address the actual question</li><li><strong>Conceptual boundary</strong> — don't shift focus unless required</li><li><strong>Improvement relevance</strong> — unrelated detail is scope creep</li></ul><h4>Violation examples</h4><ul><li><strong>Conceptual redirection:</strong> "Explore mechanisms of biodiversity loss" — question asks about effects on LDCs</li><li><strong>Scope creep:</strong> "A stronger version would explore how biodiversity loss worsens conditions"</li><li><strong>Mechanistic distraction:</strong> Asking "how" when the question asks "what" effects</li></ul></div></div></div>
+    <!-- QUESTION FOCUS ALIGNMENT -->
+    <div class="eval-card" onclick="toggleEval(this)">
+      <div class="eval-icon" style="background:var(--coral-light);color:var(--coral);">❓</div>
+      <h3>Question Focus Alignment</h3>
+      <p class="eval-desc">Do all improvements directly strengthen the student's answer to the essay question?</p>
+      <span class="expand-hint">Click for details ↓</span>
+      <div class="eval-detail"><div class="eval-detail-inner">
+        <h4>What it checks</h4>
+        <ul>
+          <li><strong>Direct question alignment</strong> — feedback must address the specific focus and requirements of the essay question without introducing tangential concepts</li>
+          <li><strong>Conceptual boundary maintenance</strong> — when a question asks about specific impacts (e.g., effects on LDCs), feedback must not shift toward underlying mechanisms unless the question explicitly requires it</li>
+          <li><strong>Improvement relevance</strong> — suggested improvements must enhance the student's response within the question's scope; adding unrelated detail constitutes scope creep</li>
+          <li><strong>Contextual appropriateness</strong> — feedback should recognise what the question is testing; background knowledge should only be invoked when directly relevant</li>
+        </ul>
+        <h4>Violation examples</h4>
+        <ul>
+          <li><strong>Conceptual redirection:</strong> "You could discuss how ecosystem disruption leads to haze" — when the question asks about effects on LDCs, not ecosystem mechanics</li>
+          <li><strong>Scope creep:</strong> "A stronger version would explore how biodiversity loss worsens these conditions" — expanding beyond what the question requires</li>
+          <li><strong>Mechanistic distraction:</strong> "Emphasise the causal relationship between deforestation and ecosystem disruption" — when the question asks about effects, not mechanisms</li>
+          <li><strong>Knowledge reference mismatch:</strong> Tagging "disruption of ecosystems and loss of biodiversity" as the knowledge reference when the question asks about effects on LDCs</li>
+          <li><strong>Prerequisite confusion:</strong> "First clarify how ecosystem disruption directly connects to health issues" — treating background context as the main focus</li>
+        </ul>
+      </div></div>
+    </div>
 
   </div>
 </div>
