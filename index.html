@@ -83,15 +83,22 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 .eval-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
 .eval-card .eval-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 12px; }
 .eval-card h3 { font-family: 'Fraunces', serif; font-size: 1.05rem; margin-bottom: 6px; }
-.eval-card .eval-desc { font-size: 0.85rem; color: var(--muted); }
+.eval-card .eval-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
 .eval-card .eval-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease; opacity: 0; margin-top: 0; }
 .eval-card.open .eval-detail { max-height: 2000px; opacity: 1; margin-top: 16px; }
 .eval-detail-inner { border-top: 1px solid var(--border); padding-top: 16px; font-size: 0.85rem; color: var(--ink); line-height: 1.7; }
 .eval-detail-inner h4 { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 12px 0 6px; }
 .eval-detail-inner h4:first-child { margin-top: 0; }
 .eval-detail-inner ul { padding-left: 18px; margin: 0; }
-.eval-detail-inner li { margin-bottom: 4px; color: var(--muted); font-size: 0.83rem; }
+.eval-detail-inner li { margin-bottom: 6px; color: var(--muted); font-size: 0.83rem; }
 .eval-detail-inner li strong { color: var(--ink); }
+.eval-summary { color: var(--ink); margin-bottom: 12px; }
+.eval-violations { margin-top: 10px; }
+.eval-violations-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 8px; }
+.eval-violation { display: flex; gap: 8px; margin-bottom: 6px; font-size: 0.82rem; align-items: flex-start; }
+.eval-violation-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--coral); flex-shrink: 0; margin-top: 7px; }
+.eval-violation span { color: var(--muted); }
+.eval-violation strong { color: var(--ink); }
 .expand-hint { font-size: 0.75rem; color: #B8B2AA; margin-top: 8px; display: inline-block; }
 .eval-card.open .expand-hint { display: none; }
 
@@ -186,7 +193,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
   <button class="nav-btn" onclick="scrollTo_('results')">Results</button>
 </nav>
 
-<!-- ═══════ OVERVIEW ═══════ -->
+<!-- OVERVIEW -->
 <div class="section" id="overview">
   <div class="section-header">
     <h2>AI Service Evaluation</h2>
@@ -202,7 +209,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 </div>
 <div class="section-divider"></div>
 
-<!-- ═══════ SYSTEM PROMPTS ═══════ -->
+<!-- SYSTEM PROMPTS -->
 <div class="section" id="prompts">
   <div class="section-header">
     <h2>System Prompts</h2>
@@ -237,7 +244,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 </div>
 <div class="section-divider"></div>
 
-<!-- ═══════ PROMPT FLOWCHART ═══════ -->
+<!-- PROMPT FLOWCHART -->
 <div class="section" id="flowchart">
   <div class="section-header">
     <h2>How the Markly AI Prompt Works</h2>
@@ -250,51 +257,37 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
       <div class="fc-legend-item"><div class="fc-dot check"></div> Quality check</div>
     </div>
     <div class="fc-flow">
-
       <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 1</span><h3>🎓 AI Takes On the Role of Examiner</h3><p class="fc-summary">The AI is told to act as a Singapore Geography teacher grading JC-level essays.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI is given a specific persona: a Singaporean Geography examiner from the Ministry of Education. This means it uses British English, understands the local syllabus, and knows the standard expected of 17–18 year-old students.</div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
       <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 2</span><h3>📥 Receive the Inputs</h3><p class="fc-summary">The AI receives three things: the student's essay, the essay question, and the grading criteria.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">Before doing any grading, the AI is given:<ul><li><strong>The student's essay</strong> — the actual text the student wrote</li><li><strong>Assessment Objectives (AOs)</strong> — the learning goals the essay is judged against</li><li><strong>Syllabus pointers</strong> — a list of specific Geography topics the essay could cover</li></ul></div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
-      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 1</span><h3>🔒 Evidence Locking — Only Grade What's Written</h3><p class="fc-summary">The AI is strictly forbidden from guessing what the student "meant to say." It can only judge actual written words.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">Safety rules for the AI:<ul><li><strong>Must quote</strong> the student's exact words before making any judgement</li><li><strong>Cannot assume</strong> the student knows something they didn't write down</li><li><strong>Cannot say something is "missing"</strong> unless it has scanned the entire essay and confirmed it's truly absent</li><li><strong>Cannot introduce</strong> new Geography concepts the student didn't mention</li></ul><div class="fc-example">Example: If a student doesn't mention "carbon release," the AI cannot say "You forgot about carbon release." It can only comment on what the student <em>did</em> write.</div></div></div></div>
+      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 1</span><h3>🔒 Evidence Locking — Only Grade What's Written</h3><p class="fc-summary">The AI is strictly forbidden from guessing what the student "meant to say." It can only judge actual written words.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">Safety rules for the AI:<ul><li><strong>Must quote</strong> the student's exact words before making any judgement</li><li><strong>Cannot assume</strong> the student knows something they didn't write down</li><li><strong>Cannot say something is "missing"</strong> unless it has scanned the entire essay</li><li><strong>Cannot introduce</strong> new Geography concepts the student didn't mention</li></ul><div class="fc-example">Example: If a student doesn't mention "carbon release," the AI cannot say "You forgot about carbon release." It can only comment on what the student <em>did</em> write.</div></div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
-      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 3</span><h3>🔍 Select Up to 5 Quotes from the Essay</h3><p class="fc-summary">The AI picks up to five specific sentences from the essay to give feedback on.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI reads the whole essay and selects the most important passages — up to five. Each selected quote must be an exact copy of what the student wrote.<div class="fc-example">The AI focuses on the 5 <em>highest-impact</em> feedback only.</div></div></div></div>
+      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 3</span><h3>🔍 Select Up to 5 Quotes from the Essay</h3><p class="fc-summary">The AI picks up to five specific sentences from the essay to give feedback on.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI reads the whole essay and selects the most important passages — up to five. Each selected quote must be an exact copy of what the student wrote.</div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
-      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 4</span><h3>🏷️ Classify Each Quote</h3><p class="fc-summary">For each quote, the AI decides what type of writing it is — description, explanation, evidence, or evaluation.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">This matters because different types of writing need different feedback:<ul><li><strong>Descriptive statement</strong> — States a fact without explaining why</li><li><strong>Causal explanation</strong> — Explains why or how something happens</li><li><strong>Example / Evidence</strong> — A specific case or data point</li><li><strong>Evaluation</strong> — A judgement weighing significance</li></ul><div class="fc-example">Key rule: The AI must <em>not</em> treat a description as if it were an explanation. A student who writes "Deforestation causes flooding" is describing, not explaining <em>how</em>.</div></div></div></div>
+      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 4</span><h3>🏷️ Classify Each Quote</h3><p class="fc-summary">For each quote, the AI decides what type of writing it is — description, explanation, evidence, or evaluation.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">Different types of writing need different feedback:<ul><li><strong>Descriptive statement</strong> — States a fact without explaining why</li><li><strong>Causal explanation</strong> — Explains why or how something happens</li><li><strong>Example / Evidence</strong> — A specific case or data point</li><li><strong>Evaluation</strong> — A judgement weighing significance</li></ul></div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
-      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 5</span><h3>🎯 Match to Assessment Objective</h3><p class="fc-summary">Each quote is linked to a specific learning goal (AO) to ensure the feedback is curriculum-aligned.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI checks: "Which learning goal does this quote relate to?"<ul><li>The AI must <strong>justify</strong> why the quote is relevant to that AO</li><li>If it can't justify the link, it <strong>must not use that quote</strong></li></ul></div></div></div>
+      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 5</span><h3>🎯 Match to Assessment Objective</h3><p class="fc-summary">Each quote is linked to a specific learning goal (AO) to ensure the feedback is curriculum-aligned.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI checks: "Which learning goal does this quote relate to?" The AI must justify why the quote is relevant to that AO. If it can't justify the link, it must not use that quote.</div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
-      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 2</span><h3>📎 Syllabus Pointer Must Match the Quote</h3><p class="fc-summary">The AI can only tag a syllabus topic if the student's own words support it.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">This prevents the AI from "inventing" connections to the syllabus:<ul><li>The syllabus topic must be <strong>directly reflected</strong> in the student's actual words</li><li>The AI must <strong>quote the exact phrase</strong> that supports the link</li><li>If no phrase supports the link, the AI <strong>must not use that syllabus pointer</strong></li></ul><div class="fc-example">Example: If the student writes about "trees being removed causing rain to wash away topsoil," the AI can tag <em>"soil erosion."</em> But it cannot tag "loss of biodiversity" from that same sentence.</div></div></div></div>
+      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 2</span><h3>📎 Syllabus Pointer Must Match the Quote</h3><p class="fc-summary">The AI can only tag a syllabus topic if the student's own words support it.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner"><ul><li>The syllabus topic must be <strong>directly reflected</strong> in the student's actual words</li><li>The AI must <strong>quote the exact phrase</strong> that supports the link</li><li>If no phrase supports the link, the AI <strong>must not use that syllabus pointer</strong></li></ul><div class="fc-example">Example: "trees being removed causing rain to wash away topsoil" → AI can tag <em>"soil erosion"</em> but not "loss of biodiversity."</div></div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
-      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 3</span><h3>🧱 Stay Within the Quote's Scope</h3><p class="fc-summary">Feedback on a quote must only address ideas in that quote — not ideas from other paragraphs.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner"><ul><li>The AI must <strong>not pull in ideas from other paragraphs</strong> unless it explicitly labels them as a "cross-reference" with a direct quote</li><li>Each feedback comment stays <strong>focused on that one highlighted passage</strong></li></ul><div class="fc-example">For students to know exactly <em>which sentence</em> the feedback applies to and can revise precisely.</div></div></div></div>
+      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 3</span><h3>🧱 Stay Within the Quote's Scope</h3><p class="fc-summary">Feedback on a quote must only address ideas in that quote — not ideas from other paragraphs.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI must not pull in ideas from other paragraphs unless it explicitly labels them as a "cross-reference" with a direct quote. Each feedback comment stays focused on that one highlighted passage.</div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
-      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 6</span><h3>✍️ Write Balanced Feedback</h3><p class="fc-summary">For each quote, the AI writes feedback that acknowledges strengths and gives concrete next steps.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The feedback follows a structured teaching model:<ul><li><strong>Feed Up</strong> — Remind the student of the goal and what "good" looks like</li><li><strong>Feed Back</strong> — Say what the student did well and identify the most important gap</li><li><strong>Feed Forward</strong> — Give a specific, actionable next step to improve</li></ul><div class="fc-example">Good feedback sounds like: <em>"You have explained that deforestation leads to soil erosion — this could be further strengthened by explaining how the removal of root systems specifically reduces soil stability."</em></div></div></div></div>
+      <div class="fc-step process" onclick="toggleFc(this)"><span class="fc-step-number">Step 6</span><h3>✍️ Write Balanced Feedback</h3><p class="fc-summary">For each quote, the AI writes feedback that acknowledges strengths and gives concrete next steps.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The feedback follows a structured teaching model:<ul><li><strong>Feed Up</strong> — Remind the student of the goal and what "good" looks like</li><li><strong>Feed Back</strong> — Say what the student did well and identify the most important gap</li><li><strong>Feed Forward</strong> — Give a specific, actionable next step to improve</li></ul><div class="fc-example"><em>"You have explained that deforestation leads to soil erosion — this could be further strengthened by explaining how the removal of root systems specifically reduces soil stability."</em></div></div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
-      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 4</span><h3>❓ Stay Aligned to the Essay Question</h3><p class="fc-summary">All suggestions must help the student answer the specific essay question better — not drift to unrelated topics.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">If the essay question asks "How does deforestation affect LDCs?", then every improvement suggestion must help the student explain impacts on Less Developed Countries — not drift into general ecosystem science.<div class="fc-example">This prevents the AI from suggesting the student write about something impressive-sounding but irrelevant to the question.</div></div></div></div>
+      <div class="fc-step rule" onclick="toggleFc(this)"><span class="fc-step-number">Rule 4</span><h3>❓ Stay Aligned to the Essay Question</h3><p class="fc-summary">All suggestions must help the student answer the specific essay question better — not drift to unrelated topics.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">If the essay question asks "How does deforestation affect LDCs?", every improvement suggestion must help explain impacts on LDCs — not drift into general ecosystem science.</div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
-      <div class="fc-step check" onclick="toggleFc(this)"><span class="fc-step-number">Quality Check</span><h3>✅ Self-Check Before Submitting</h3><p class="fc-summary">Before returning any results, the AI runs a mandatory 5-point quality checklist on its own work.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI asks itself:<ul><li>Did I only use <strong>approved Assessment Objectives</strong>? (If not → abort entirely)</li><li>Does every syllabus tag <strong>match the student's actual words</strong>? (If not → remove it)</li><li>Did I <strong>introduce any new concepts</strong> the student didn't mention? (If so → remove them)</li><li>Does the student <strong>already address this point</strong> elsewhere? (If so → acknowledge it)</li><li>Is every claim I make <strong>backed by a direct quote</strong>?</li></ul><div class="fc-example">This is like a teacher double-checking their red-pen comments before handing back the paper.</div></div></div></div>
+      <div class="fc-step check" onclick="toggleFc(this)"><span class="fc-step-number">Quality Check</span><h3>✅ Self-Check Before Submitting</h3><p class="fc-summary">Before returning any results, the AI runs a mandatory 5-point quality checklist on its own work.</p><span class="fc-expand">Click to learn more ↓</span><div class="fc-detail"><div class="fc-detail-inner">The AI asks itself:<ul><li>Did I only use <strong>approved Assessment Objectives</strong>?</li><li>Does every syllabus tag <strong>match the student's actual words</strong>?</li><li>Did I <strong>introduce any new concepts</strong> the student didn't mention?</li><li>Does the student <strong>already address this point</strong> elsewhere?</li><li>Is every claim I make <strong>backed by a direct quote</strong>?</li></ul></div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
       <div class="fc-decision"><div class="fc-diamond-wrap"><div class="fc-diamond"><span>?</span></div></div><p class="fc-decision-text">Did everything pass the quality check?</p><div class="fc-branches"><div class="fc-branch yes">✓ Yes → Output results</div><div class="fc-branch no">✗ No → Fix or abort</div></div></div>
       <div class="fc-connector"><div class="fc-line"></div><div class="fc-arrow"></div></div>
-
       <div class="fc-output"><h3>📤 Final Output</h3><p style="color:#B8B2AA;margin-bottom:14px;font-size:0.87rem;">The AI returns structured feedback as a JSON object with these fields for each quote:</p><div class="fc-field"><span class="fc-field-label">highlighted_text</span><span class="fc-field-desc">The exact sentence(s) quoted from the essay</span></div><div class="fc-field"><span class="fc-field-label">assessment_objective</span><span class="fc-field-desc">Which learning goal (AO) this feedback relates to</span></div><div class="fc-field"><span class="fc-field-label">knowledge_reference</span><span class="fc-field-desc">The syllabus topic + the student's phrase that supports it</span></div><div class="fc-field"><span class="fc-field-label">AI_feedback</span><span class="fc-field-desc">Balanced feedback with strengths, gaps, and next steps</span></div></div>
-
     </div>
   </div>
 </div>
 <div class="section-divider"></div>
 
-<!-- ═══════ EVALUATORS ═══════ -->
+<!-- EVALUATORS -->
 <div class="section" id="evaluators">
   <div class="section-header">
     <h2>Evaluation Prompts</h2>
@@ -311,42 +304,40 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
       <div class="eval-detail"><div class="eval-detail-inner">
         <h4>What it checks</h4>
         <ul>
-          <li><strong>Direct quote verification</strong> — any claim about what the student wrote or didn't write must be verifiable through exact quotes or paraphrases from the essay</li>
-          <li><strong>No unsubstantiated interpretations</strong> — feedback must not infer the student's understanding, intent, or comprehension beyond what is explicitly written</li>
-          <li><strong>Contextual completeness</strong> — the entire essay must be evaluated before claiming something is absent; it may appear elsewhere or be implicitly addressed</li>
-          <li><strong>Accurate attribution</strong> — praise or critique must accurately reflect what the student actually wrote; don't credit analysis they didn't provide</li>
+          <li><strong>Every claim must link to a direct quote</strong> — any statement about what the student did or didn't write must be verifiable from the essay text</li>
+          <li><strong>No assumed intent or unsubstantiated interpretations</strong> — the AI cannot infer understanding or knowledge not explicitly shown in the essay</li>
+          <li><strong>Praise and criticism must match what the student wrote</strong> — don't credit analysis they didn't provide, or criticise omissions that don't exist</li>
         </ul>
         <h4>Violation examples</h4>
         <ul>
-          <li><strong>False positive attribution:</strong> "Your mention of X shows a clear understanding of Y" — when the student never mentioned X</li>
-          <li><strong>False negative omission:</strong> "Consider elaborating on how X occurs" — when the student already explained it elsewhere in the essay</li>
+          <li><strong>False attribution:</strong> "Your mention of X shows understanding of Y" — when the student never mentioned X</li>
+          <li><strong>False omission:</strong> "Consider elaborating on X" — when the student already explained it elsewhere in the essay</li>
           <li><strong>Unverifiable interpretation:</strong> "This shows you understand the concept of..." — inferring comprehension not evidenced in the text</li>
-          <li><strong>Selective context ignoring:</strong> "The connection between X and Y needs clarification" — when the student addressed it in a different paragraph</li>
-          <li><strong>Quote misrepresentation:</strong> "Your discussion of X..." — when the characterisation doesn't accurately reflect what was written</li>
+          <li><strong>Selective reading:</strong> Claiming something is missing while ignoring relevant context from another paragraph</li>
+          <li><strong>Quote misrepresentation:</strong> Characterising the student's work in a way that doesn't accurately reflect what they wrote</li>
         </ul>
       </div></div>
     </div>
 
-    <!-- DATASET SCOPE ALIGNMENT -->
+    <!-- SCOPE ALIGNMENT -->
     <div class="eval-card" onclick="toggleEval(this)">
       <div class="eval-icon" style="background:var(--olive-light);color:var(--olive);">📎</div>
-      <h3>Dataset Scope Alignment</h3>
-      <p class="eval-desc">Is the syllabus pointer supported by text in the student's essay?</p>
+      <h3>Scope Alignment</h3>
+      <p class="eval-desc">Is the AI feedback scoped to what the student actually wrote about?</p>
       <span class="expand-hint">Click for details ↓</span>
       <div class="eval-detail"><div class="eval-detail-inner">
         <h4>What it checks</h4>
         <ul>
-          <li><strong>Syllabus grounding</strong> — feedback must only reference content explicitly present in the syllabus provided in the input prompt; no new concepts or frameworks should be introduced</li>
-          <li><strong>Content alignment</strong> — feedback must directly address the specific knowledge reference in the syllabus, not suggest alternative or tangential topics</li>
-          <li><strong>Targeted improvement guidance</strong> — suggestions should enhance the student's response within the existing scope (e.g., quality of causal explanation), not redirect toward unrelated syllabus content</li>
-          <li><strong>Scope boundaries</strong> — when a student's response doesn't address part of the syllabus, feedback should clarify the gap rather than treat it as a required deficiency</li>
+          <li><strong>Feedback must address what the student wrote</strong> — observations and suggestions must be grounded in the content of the student's essay</li>
+          <li><strong>Only invoke syllabus concepts the essay engages with</strong> — don't tag a syllabus topic unless the student's words directly support it</li>
+          <li><strong>No topic injection or missing knowledge references</strong> — feedback must not introduce concepts the student didn't address or flag gaps based on external expectations</li>
         </ul>
         <h4>Violation examples</h4>
         <ul>
-          <li><strong>Out-of-scope topic introduction:</strong> Suggesting discussion of "biogeochemical cycles" when the syllabus and student response focus on economic causation</li>
-          <li><strong>Scope creep in requirements:</strong> "Minimum requirement: Address how disruption of biogeochemical cycles impacts sustainability" — when this topic isn't in the syllabus</li>
-          <li><strong>Indirect suggestion masquerading as gap-filling:</strong> "To improve, discuss potential environmental trade-offs" — when environmental impacts aren't part of the syllabus</li>
-          <li><strong>Conflation of partial relevance:</strong> Acknowledging a topic wasn't in the student's response, then still framing its inclusion as necessary for improvement despite being out of scope</li>
+          <li><strong>Topic injection:</strong> "To improve, discuss potential environmental trade-offs, such as disrupting biogeochemical cycles" — introducing a concept not present in the essay</li>
+          <li><strong>Misaligned requirement:</strong> "Minimum requirement: Address how disruption of biogeochemical cycles impacts..." — demanding content not evidenced in the student's writing</li>
+          <li><strong>Scope redirection:</strong> "A stronger version would examine how transitioning economies could balance development and preservation" — redirecting to a different angle than what the student chose</li>
+          <li><strong>False gap identification:</strong> "You did not address biogeochemical cycles which is the knowledge reference" — flagging a gap based on syllabus pointer rather than logical scope of the student's argument</li>
         </ul>
       </div></div>
     </div>
@@ -360,18 +351,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
       <div class="eval-detail"><div class="eval-detail-inner">
         <h4>What it checks</h4>
         <ul>
-          <li><strong>Construct-content alignment</strong> — the AO referenced in feedback must directly correspond to the actual quality issue in the student's response, grounded in the provided assessment objectives (not invented)</li>
-          <li><strong>Holistic response evaluation</strong> — the AI must evaluate the full response relative to rubrics, not isolate individual elements or demand dimensions outside the AO's scope</li>
-          <li><strong>Precise problem identification</strong> — the root cause of any deficiency must be accurately diagnosed before improvement suggestions are offered</li>
-          <li><strong>Proportionate feedback scope</strong> — suggestions should prioritise the most significant rubric-based weaknesses, not peripheral enhancements</li>
+          <li><strong>Feedback that referenced construct must align with the question</strong> — the AO cited must directly correspond to the quality issue in the student's response</li>
+          <li><strong>Suggestions should prioritise significant weaknesses</strong> — focus on the most impactful rubric gaps, not peripheral enhancements</li>
+          <li><strong>Diagnose root cause before suggesting improvements</strong> — accurately identify what's wrong before prescribing a fix</li>
         </ul>
         <h4>Violation examples</h4>
         <ul>
-          <li><strong>Construct misidentification:</strong> Referencing "Quality of Evaluation" when the response demonstrates analytical weakness, not evaluation weakness</li>
-          <li><strong>Partial response analysis:</strong> Criticising lack of specificity while ignoring that the response already meets core rubric criteria across other dimensions</li>
-          <li><strong>Root cause misdiagnosis:</strong> Suggesting more detailed support when the real issue is incomplete reasoning, not lack of evidence</li>
-          <li><strong>Misaligned improvement recommendations:</strong> Recommending deeper analysis of carbon cycles when the student already addresses the core construct well</li>
+          <li><strong>Construct mislabelling:</strong> Referencing "Quality of Evaluation" when the real issue is analytical depth, not evaluative judgement</li>
           <li><strong>Construct conflation:</strong> Using "Evaluation" and "Analysis" interchangeably when they represent distinct rubric dimensions</li>
+          <li><strong>Root cause misdiagnosis:</strong> Suggesting more evidence when the actual issue is incomplete causal reasoning</li>
+          <li><strong>Non-priority suggestion:</strong> Recommending deeper analysis of a tangential topic when a core construct gap exists</li>
+          <li><strong>Holistic context neglect:</strong> Identifying a deficiency that doesn't exist when the response is evaluated as a whole</li>
         </ul>
       </div></div>
     </div>
@@ -385,19 +375,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
       <div class="eval-detail"><div class="eval-detail-inner">
         <h4>What it checks</h4>
         <ul>
-          <li><strong>Evidence-based specificity</strong> — all claims must be grounded in concrete evidence from the student's work, with direct references to specific passages or sentences</li>
-          <li><strong>Actionable improvement guidance</strong> — feedback must include clear, executable next steps specific enough to guide revision while preserving student agency</li>
-          <li><strong>Pedagogical independence</strong> — feedback should build metacognitive skills through checkpoint questions and self-reflection prompts, not just provide answers</li>
-          <li><strong>Balanced strength-gap analysis</strong> — both strengths and gaps must be identified; exclusively deficit-focused or exclusively praise-focused feedback is a violation</li>
-          <li><strong>Measurable clarity</strong> — guidance must use clear criteria so students can objectively verify whether they have met the suggested improvements</li>
+          <li><strong>A balance of strengths and gaps must be identified</strong> — feedback must acknowledge what the student did well alongside areas for improvement</li>
+          <li><strong>Guidance provided should use a clear criteria</strong> — improvement suggestions must be specific and measurable, not abstract directives</li>
+          <li><strong>Feedback should have checkpoint questions for self-reflection</strong> — include prompts that build student independence rather than prescribing exact answers</li>
         </ul>
         <h4>Violation examples</h4>
         <ul>
-          <li><strong>Unsupported claims:</strong> "Your writing is unclear" — no specific passage or sentence cited</li>
-          <li><strong>Vague improvement suggestions:</strong> "Try to improve your writing style" — not specific or actionable enough to guide revision</li>
-          <li><strong>Prescriptive over generative:</strong> "You should write: 'The protagonist's motivation stems from...'" — provides the answer instead of guiding the student to find it</li>
-          <li><strong>Imbalanced evaluation:</strong> Multiple paragraphs of criticism with no acknowledgment of what was done well</li>
-          <li><strong>Non-measurable guidance:</strong> "Add more depth to your analysis" — no criteria for what depth looks like or how to verify it</li>
+          <li><strong>Missing structure component:</strong> Feedback that jumps to criticism without stating the learning goal or success criteria</li>
+          <li><strong>Vague or generic comments:</strong> "Good job" without explaining what specifically was done well or what to keep doing</li>
+          <li><strong>Over-commenting:</strong> Listing 5+ improvement areas without indicating which are most important, violating the 3-2-1 rule</li>
+          <li><strong>Prescriptive over generative:</strong> "You should write: 'The protagonist's motivation stems from...'" — providing the answer instead of guiding the student</li>
+          <li><strong>Non-actionable guidance:</strong> "Think more critically about your sources" — too abstract to translate into concrete revision actions</li>
         </ul>
       </div></div>
     </div>
@@ -411,18 +399,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
       <div class="eval-detail"><div class="eval-detail-inner">
         <h4>What it checks</h4>
         <ul>
-          <li><strong>Direct question alignment</strong> — feedback must address the specific focus and requirements of the essay question without introducing tangential concepts</li>
-          <li><strong>Conceptual boundary maintenance</strong> — when a question asks about specific impacts (e.g., effects on LDCs), feedback must not shift toward underlying mechanisms unless the question explicitly requires it</li>
-          <li><strong>Improvement relevance</strong> — suggested improvements must enhance the student's response within the question's scope; adding unrelated detail constitutes scope creep</li>
-          <li><strong>Contextual appropriateness</strong> — feedback should recognise what the question is testing; background knowledge should only be invoked when directly relevant</li>
+          <li><strong>Suggestions must directly strengthen the student's response to the question</strong> — every improvement must help answer what was specifically asked</li>
+          <li><strong>Don't shift focus unless required</strong> — feedback must not redirect toward underlying mechanisms or related concepts unless the question demands it</li>
+          <li><strong>Unrelated detail = scope creep</strong> — adding detail that's topically related but not required by the question dilutes the effectiveness of feedback</li>
         </ul>
         <h4>Violation examples</h4>
         <ul>
           <li><strong>Conceptual redirection:</strong> "You could discuss how ecosystem disruption leads to haze" — when the question asks about effects on LDCs, not ecosystem mechanics</li>
-          <li><strong>Scope creep:</strong> "A stronger version would explore how biodiversity loss worsens these conditions" — expanding beyond what the question requires</li>
           <li><strong>Mechanistic distraction:</strong> "Emphasise the causal relationship between deforestation and ecosystem disruption" — when the question asks about effects, not mechanisms</li>
-          <li><strong>Knowledge reference mismatch:</strong> Tagging "disruption of ecosystems and loss of biodiversity" as the knowledge reference when the question asks about effects on LDCs</li>
-          <li><strong>Prerequisite confusion:</strong> "First clarify how ecosystem disruption directly connects to health issues" — treating background context as the main focus</li>
+          <li><strong>Knowledge reference mismatch:</strong> Tagging "disruption of ecosystems" when the question targets higher-level impacts or applications</li>
+          <li><strong>Prerequisite confusion:</strong> "First clarify how ecosystem disruption connects to health issues" — treating background context as the main focus</li>
+          <li><strong>Alternative pathway suggestion:</strong> "You could instead focus on the ecological dimensions" — diverging from the question's intended direction</li>
         </ul>
       </div></div>
     </div>
@@ -431,7 +418,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 </div>
 <div class="section-divider"></div>
 
-<!-- ═══════ SCORING ═══════ -->
+<!-- SCORING -->
 <div class="section" id="scoring">
   <div class="section-header">
     <h2>Questions &amp; Scoring</h2>
@@ -449,15 +436,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 </div>
 <div class="section-divider"></div>
 
-<!-- ═══════ RESULTS ═══════ -->
+<!-- RESULTS -->
 <div class="section" id="results">
   <div class="section-header">
     <h2>Evaluation Results</h2>
     <p>Side-by-side comparison of SAFA vs Markly across both questions and all five evaluators. Higher is better.</p>
   </div>
   <div class="results-wrapper">
-
-    <!-- SAFA -->
     <div class="result-group">
       <h3><span class="tag safa">Original</span> SAFA Evaluation Results</h3>
       <div class="result-tables">
@@ -487,8 +472,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
         </div>
       </div>
     </div>
-
-    <!-- MARKLY -->
     <div class="result-group">
       <h3><span class="tag markly">New</span> Markly Evaluation Results</h3>
       <div class="result-tables">
@@ -518,7 +501,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
